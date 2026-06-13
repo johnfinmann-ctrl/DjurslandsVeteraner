@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DV Aktiviteter">
+<meta name="theme-color" content="#4a5240">
+<title>DV Aktiviteter</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+CiAgPHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSI0MCIgZmlsbD0iIzRhNTI0MCIvPgogIDxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9IjY4IiBmaWxsPSIjYzhiOTlhIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHRleHQgeD0iOTYiIHk9IjExOCIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjcyIiBmb250LXdlaWdodD0iOTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjYzhiOTlhIj5EVjwvdGV4dD4KPC9zdmc+">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --olive:     #4a5240;
+    --olive-l:   #6b7560;
+    --olive-pale:#eceee8;
+    --sand:      #c8b99a;
+    --red:       #8b2020;
+    --white:     #fafaf8;
+    --dark:      #1a1a17;
+    --mid:       #3d3d38;
+    --border:    rgba(74,82,64,0.16);
+    --bg:        #f2f3ef;
+    --radius:    12px;
+    --shadow:    0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    display: flex;
+    flex-direction: column;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--olive);
+    padding: 52px 20px 16px;
+    flex-shrink: 0;
+  }
+  .topbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .topbar-logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .topbar-badge {
+    width: 36px; height: 36px;
+    background: var(--sand);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--olive);
+  }
+  .topbar-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    color: white;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  .topbar-name span {
+    display: block;
+    font-size: 0.6rem; font-weight: 300;
+    color: var(--sand);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .topbar-icon-btn {
+    background: rgba(255,255,255,0.12);
+    border: none; border-radius: 10px;
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; cursor: pointer;
+    color: white;
+    transition: background 0.15s;
+  }
+  .topbar-icon-btn:hover { background: rgba(255,255,255,0.22); }
+
+  /* Month nav */
+  .month-nav {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .month-nav button {
+    background: rgba(255,255,255,0.12);
+    border: none; border-radius: 8px;
+    width: 34px; height: 34px;
+    color: white; font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .month-nav button:hover { background: rgba(255,255,255,0.25); }
+  .month-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem; font-weight: 600;
+    color: white;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── MINI CALENDAR ── */
+  .cal-wrap {
+    background: var(--olive);
+    padding: 0 20px 20px;
+    flex-shrink: 0;
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .cal-dow {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 4px 0;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .cal-day:hover { background: rgba(255,255,255,0.12); }
+  .cal-day.today { background: rgba(255,255,255,0.18); }
+  .cal-day.selected { background: var(--red); }
+  .cal-day.other-month { opacity: 0.28; }
+  .cal-day-num {
+    font-size: 0.82rem; font-weight: 500;
+    color: white;
+    line-height: 1;
+  }
+  .cal-dot {
+    width: 5px; height: 5px;
+    background: var(--sand);
+    border-radius: 50%;
+    margin-top: 2px;
+  }
+  .cal-day.selected .cal-dot { background: white; }
+
+  /* ── SCROLL AREA ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px;
+    padding-bottom: 90px;
+  }
+
+  /* ── VIEW TOGGLE ── */
+  .view-toggle {
+    display: flex;
+    background: white;
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .vt-btn {
+    flex: 1;
+    padding: 8px;
+    border: none; border-radius: 7px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--olive-l);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .vt-btn.active {
+    background: var(--olive);
+    color: white;
+    box-shadow: 0 2px 8px rgba(74,82,64,0.3);
+  }
+
+  /* ── SECTION LABEL ── */
+  .sec-lbl {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--olive-l);
+    margin: 20px 0 10px 4px;
+  }
+  .sec-lbl:first-child { margin-top: 0; }
+
+  /* ── AKTIVITET KORT ── */
+  .ak-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    min-height: 90px;
+  }
+  .ak-card:hover, .ak-card:active { transform: scale(0.985); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+
+  .ak-date-col {
+    width: 64px;
+    background: var(--olive);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+    padding: 12px 8px;
+  }
+  .ak-date-col .day {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.6rem; font-weight: 700;
+    color: white;
+    line-height: 1;
+  }
+  .ak-date-col .mth {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-top: 2px;
+  }
+  .ak-date-col .dow {
+    font-size: 0.55rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  .ak-body {
+    flex: 1;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .ak-top { }
+  .ak-type {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 3px;
+  }
+  .ak-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--dark);
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+  .ak-meta {
+    font-size: 0.73rem;
+    color: var(--olive-l);
+    display: flex; gap: 10px;
+    flex-wrap: wrap;
+  }
+  .ak-arrow {
+    font-size: 1.1rem;
+    color: var(--olive-l);
+    display: flex; align-items: center;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+  .ak-badge {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: var(--olive-pale);
+    color: var(--olive);
+    margin-top: 4px;
+  }
+  .ak-badge.red { background: #fde8e8; color: var(--red); }
+  .ak-badge.full { background: #f0f0f0; color: #888; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: white;
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 8px 0 20px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+    z-index: 100;
+  }
+  .bn-item {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 3px;
+    padding: 6px;
+    cursor: pointer;
+    border: none; background: none;
+    transition: all 0.15s;
+  }
+  .bn-icon { font-size: 1.25rem; }
+  .bn-lbl {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--olive-l);
+  }
+  .bn-item.active .bn-lbl { color: var(--olive); font-weight: 600; }
+  .bn-item.active .bn-icon { filter: saturate(1.5); }
+
+  /* ── TILMELDING SHEET ── */
+  .sheet-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 500;
+    backdrop-filter: blur(3px);
+  }
+  .sheet-overlay.open { display: flex; align-items: flex-end; }
+  .sheet {
+    background: var(--white);
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.34, 1.26, 0.64, 1);
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+  .sheet-overlay.open .sheet { transform: translateY(0); }
+
+  .sheet-handle {
+    width: 40px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 14px auto 0;
+  }
+  .sheet-header {
+    padding: 16px 22px 0;
+    display: flex; align-items: flex-start; justify-content: space-between;
+  }
+  .sheet-ev-type {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+  .sheet-ev-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem; font-weight: 600;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+  .sheet-close {
+    background: var(--olive-pale);
+    border: none; border-radius: 50%;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; cursor: pointer;
+    color: var(--mid);
+    flex-shrink: 0;
+    margin-left: 12px;
+    transition: background 0.15s;
+  }
+  .sheet-close:hover { background: var(--border); }
+
+  .sheet-details {
+    padding: 16px 22px;
+    display: flex; gap: 10px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+  }
+  .sheet-det-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--olive-pale);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    color: var(--olive);
+  }
+
+  .sheet-desc {
+    padding: 16px 22px;
+    font-size: 0.88rem;
+    color: var(--mid);
+    line-height: 1.65;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sheet-form {
+    padding: 20px 22px 32px;
+  }
+  .sheet-form h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 16px;
+  }
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--olive-l);
+    margin-bottom: 5px;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: var(--dark);
+    background: white;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--olive);
+  }
+  .form-group textarea { resize: none; height: 80px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--olive);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .submit-btn:hover { background: #3d4636; }
+  .submit-btn:active { transform: scale(0.98); }
+
+  /* ── BEKRÆFTELSE ── */
+  .confirm-view {
+    display: none;
+    padding: 32px 22px 40px;
+    text-align: center;
+  }
+  .confirm-view.show { display: block; }
+  .confirm-icon {
+    width: 72px; height: 72px;
+    background: #e8f0e8;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 20px;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .confirm-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem; font-weight: 600;
+    color: var(--olive);
+    margin-bottom: 10px;
+  }
+  .confirm-sub { font-size: 0.88rem; color: var(--mid); line-height: 1.6; margin-bottom: 24px; }
+  .confirm-close {
+    padding: 14px 32px;
+    background: var(--olive);
+    color: white;
+    border: none; border-radius: 12px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--olive-l);
+  }
+  .empty-state .ico { font-size: 3rem; margin-bottom: 14px; }
+  .empty-state p { font-size: 0.88rem; font-style: italic; }
+
+  /* ── SCROLL ── */
+  .scroll-area::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP BAR ═══ -->
+<div class="topbar">
+  <div class="topbar-row">
+    <div class="topbar-logo">
+      <div class="topbar-badge">DV</div>
+      <div class="topbar-name">
+        Djurslands Veteraner
+        <span>Aktiviteter</span>
+      </div>
+    </div>
+    <button class="topbar-icon-btn" onclick="goToSite()">🌐</button>
+  </div>
+  <div class="month-nav">
+    <button onclick="changeMonth(-1)">‹</button>
+    <div class="month-label" id="month-label">Juni 2026</div>
+    <button onclick="changeMonth(1)">›</button>
+  </div>
+</div>
+
+<!-- ═══ MINI KALENDER ═══ -->
+<div class="cal-wrap">
+  <div class="cal-grid" id="cal-dow-row">
+    <div class="cal-dow">M</div>
+    <div class="cal-dow">T</div>
+    <div class="cal-dow">O</div>
+    <div class="cal-dow">T</div>
+    <div class="cal-dow">F</div>
+    <div class="cal-dow">L</div>
+    <div class="cal-dow">S</div>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+</div>
+
+<!-- ═══ SCROLL AREA ═══ -->
+<div class="scroll-area">
+  <div class="view-toggle">
+    <button class="vt-btn active" id="vt-all" onclick="setView('all')">Alle aktiviteter</button>
+    <button class="vt-btn" id="vt-mine" onclick="setView('mine')">Mine tilmeldinger</button>
+  </div>
+  <div id="activity-list"></div>
+</div>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<div class="bottom-nav">
+  <button class="bn-item active">
+    <div class="bn-icon">📅</div>
+    <div class="bn-lbl">Kalender</div>
+  </button>
+  <button class="bn-item" onclick="goToSite('#nyheder')">
+    <div class="bn-icon">📰</div>
+    <div class="bn-lbl">Nyheder</div>
+  </button>
+  <button class="bn-item" onclick="goToSite('#kontakt')">
+    <div class="bn-icon">📞</div>
+    <div class="bn-lbl">Kontakt</div>
+  </button>
+  <button class="bn-item" onclick="goToSite('#stoet-os')">
+    <div class="bn-icon">❤️</div>
+    <div class="bn-lbl">Støt os</div>
+  </button>
+</div>
+
+<!-- ═══ TILMELDING SHEET ═══ -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheetOverlay(event)">
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+
+    <!-- Aktivitetsdetaljer + formular -->
+    <div id="sheet-content">
+      <div class="sheet-header">
+        <div>
+          <div class="sheet-ev-type" id="sh-type"></div>
+          <div class="sheet-ev-title" id="sh-title"></div>
+        </div>
+        <button class="sheet-close" onclick="closeSheet()">✕</button>
+      </div>
+      <div class="sheet-details" id="sh-details"></div>
+      <div class="sheet-desc" id="sh-desc"></div>
+      <div class="sheet-form">
+        <h3>Tilmelding</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fornavn</label>
+            <input type="text" id="f-fornavn" placeholder="Dit fornavn" autocomplete="given-name">
+          </div>
+          <div class="form-group">
+            <label>Efternavn</label>
+            <input type="text" id="f-efternavn" placeholder="Efternavn" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="tel" id="f-tlf" placeholder="Dit mobilnummer" autocomplete="tel">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="f-email" placeholder="din@email.dk" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Antal deltagere</label>
+          <select id="f-antal">
+            <option value="1">1 person (kun mig)</option>
+            <option value="2">2 personer</option>
+            <option value="3">3 personer</option>
+            <option value="4">4 personer</option>
+            <option value="5+">5 eller flere</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Besked (valgfri)</label>
+          <textarea id="f-besked" placeholder="Særlige ønsker, spørgsmål eller kommentarer..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitTilmelding()">
+          ✓ &nbsp; Tilmeld mig
+        </button>
+      </div>
+    </div>
+
+    <!-- Bekræftelse -->
+    <div class="confirm-view" id="confirm-view">
+      <div class="confirm-icon">✓</div>
+      <div class="confirm-title">Du er tilmeldt!</div>
+      <div class="confirm-sub" id="confirm-txt">
+        Vi glæder os til at se dig.<br>
+        Du modtager en bekræftelse på din email.
+      </div>
+      <button class="confirm-close" onclick="closeSheet()">Luk</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════
+   AKTIVITETS-DATA
+   Tilføj/ret aktiviteter her
+   ════════════════════════════════════════════ */
+const AKTIVITETER = [
+  {
+    id: 1,
+    titel: "Veterancafé Ebeltoft",
+    type: "Café",
+    dato: "2026-06-01",  // 1. mandag i juni
+    tid: "14:00–17:00",
+    sted: "Ebeltoft",
+    beskrivelse: "Første mandag i måneden samles vi til uformel kaffe og godt selskab. Alle veteraner og pårørende er velkomne — ingen tilmelding nødvendig, men vi sætter pris på at vide, om du kommer.",
+    pladser: null,  // null = ubegrænset
+    tilmeldte: 8,
+    badge: null,
+    gentagelse: "Første mandag/måned"
+  },
+  {
+    id: 2,
+    titel: "Veterancafé Kolind",
+    type: "Café",
+    dato: "2026-06-19",
+    tid: "14:00–17:00",
+    sted: "Kolind",
+    beskrivelse: "Mød dine medborgere og snak med folk, der forstår hvad det vil sige at have tjent Danmark. Vi er åbnet igen efter en pause og glæder os til at se jer.",
+    pladser: null,
+    tilmeldte: 5,
+    badge: "Ny start",
+    gentagelse: null
+  },
+  {
+    id: 3,
+    titel: "Sommerfest for veteraner",
+    type: "Arrangement",
+    dato: "2026-06-26",
+    tid: "16:00–21:00",
+    sted: "Djursland",
+    beskrivelse: "Årets store fællesarrangement for alle medlemmer og pårørende. Der vil være grillmad, musik og hyggelig stemning. Tilmelding ønskes senest 20. juni.",
+    pladser: 80,
+    tilmeldte: 34,
+    badge: "Populær",
+    gentagelse: null
+  },
+  {
+    id: 4,
+    titel: "Veterancafé Ebeltoft",
+    type: "Café",
+    dato: "2026-07-06",  // 1. mandag i juli
+    tid: "14:00–17:00",
+    sted: "Ebeltoft",
+    beskrivelse: "Første mandag i måneden samles vi til uformel kaffe og godt selskab.",
+    pladser: null,
+    tilmeldte: 3,
+    badge: null,
+    gentagelse: "Første mandag/måned"
+  },
+  {
+    id: 5,
+    titel: "Sommerudflugt — Mols Bjerge",
+    type: "Udflugt",
+    dato: "2026-07-15",
+    tid: "10:00–15:00",
+    sted: "Mols Bjerge",
+    beskrivelse: "En rolig vandring i Mols Bjerge med guide. Turen er ca. 6 km og tilpasset alle konditionsniveauer. Medbringe madpakke. Gratis for alle medlemmer.",
+    pladser: 25,
+    tilmeldte: 18,
+    badge: "Få pladser",
+    gentagelse: null
+  },
+  {
+    id: 6,
+    titel: "Veterancafé Kolind",
+    type: "Café",
+    dato: "2026-07-17",
+    tid: "14:00–17:00",
+    sted: "Kolind",
+    beskrivelse: "Uformel kaffe og samvær i Kolind.",
+    pladser: null,
+    tilmeldte: 4,
+    badge: null,
+    gentagelse: null
+  },
+  {
+    id: 7,
+    titel: "Generalforsamling 2026",
+    type: "Møde",
+    dato: "2026-08-20",
+    tid: "19:00–21:30",
+    sted: "Grenaa",
+    beskrivelse: "Årets generalforsamling. Alle medlemmer har stemmeret og opfordres til at deltage. Dagsorden udsendes senest 2 uger før til alle registrerede medlemmer.",
+    pladser: null,
+    tilmeldte: 12,
+    badge: "Vigtigt",
+    gentagelse: null
+  }
+];
+
+const MAANEDER = ["Januar","Februar","Marts","April","Maj","Juni","Juli","August","September","Oktober","November","December"];
+const DAGE_SHORT = ["Man","Tir","Ons","Tor","Fre","Lør","Søn"];
+
+let currentYear = 2026;
+let currentMonth = 5; // 0-indexed, 5 = juni
+let selectedDate = null;
+let currentView = 'all';
+let myTilmeldinger = JSON.parse(localStorage.getItem('dv_tilmeldinger') || '[]');
+let activeActivity = null;
+
+/* ── Kalender ── */
+function renderCalendar() {
+  document.getElementById('month-label').textContent = MAANEDER[currentMonth] + ' ' + currentYear;
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  const first = new Date(currentYear, currentMonth, 1);
+  let startDow = first.getDay(); // 0=sun
+  startDow = startDow === 0 ? 6 : startDow - 1; // Mon=0
+
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const daysInPrev  = new Date(currentYear, currentMonth, 0).getDate();
+  const today       = new Date();
+
+  // Event days set
+  const eventDays = new Set(
+    AKTIVITETER
+      .filter(a => {
+        const d = new Date(a.dato);
+        return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
+      })
+      .map(a => new Date(a.dato).getDate())
+  );
+
+  let cells = [];
+  for (let i = startDow - 1; i >= 0; i--) cells.push({ d: daysInPrev - i, other: true });
+  for (let d = 1; d <= daysInMonth; d++) cells.push({ d, other: false });
+  while (cells.length % 7 !== 0) { cells.push({ d: cells.length - daysInMonth - startDow + 1, other: true }); }
+
+  cells.forEach(({ d, other }) => {
+    const el = document.createElement('div');
+    el.className = 'cal-day' + (other ? ' other-month' : '');
+
+    const isToday = !other &&
+      d === today.getDate() &&
+      currentMonth === today.getMonth() &&
+      currentYear === today.getFullYear();
+    if (isToday) el.classList.add('today');
+
+    const isSelected = !other && selectedDate &&
+      d === selectedDate.getDate() &&
+      currentMonth === selectedDate.getMonth() &&
+      currentYear === selectedDate.getFullYear();
+    if (isSelected) el.classList.add('selected');
+
+    el.innerHTML = `<div class="cal-day-num">${d}</div>${!other && eventDays.has(d) ? '<div class="cal-dot"></div>' : ''}`;
+
+    if (!other) {
+      el.onclick = () => {
+        selectedDate = new Date(currentYear, currentMonth, d);
+        renderCalendar();
+        renderList();
+      };
+    }
+    grid.appendChild(el);
+  });
+}
+
+function changeMonth(dir) {
+  currentMonth += dir;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
+  selectedDate = null;
+  renderCalendar();
+  renderList();
+}
+
+/* ── Aktivitetsliste ── */
+function renderList() {
+  const list = document.getElementById('activity-list');
+  list.innerHTML = '';
+
+  let items = [...AKTIVITETER].sort((a, b) => a.dato.localeCompare(b.dato));
+
+  if (currentView === 'mine') {
+    items = items.filter(a => myTilmeldinger.includes(a.id));
+  }
+
+  if (selectedDate) {
+    const ds = selectedDate.toISOString().slice(0,10);
+    items = items.filter(a => a.dato === ds);
+  } else {
+    // Filter to current month view
+    items = items.filter(a => {
+      const d = new Date(a.dato);
+      return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
+    });
+  }
+
+  if (items.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="ico">📅</div><p>${currentView === 'mine' ? 'Du er ikke tilmeldt nogen aktiviteter endnu.' : 'Ingen aktiviteter denne ${selectedDate ? "dag" : "måned"}.'}</p></div>`;
+    return;
+  }
+
+  let lastMonth = null;
+  items.forEach(a => {
+    const d = new Date(a.dato);
+    const mLabel = MAANEDER[d.getMonth()] + ' ' + d.getFullYear();
+    if (mLabel !== lastMonth && !selectedDate) {
+      const lbl = document.createElement('div');
+      lbl.className = 'sec-lbl';
+      lbl.textContent = mLabel;
+      list.appendChild(lbl);
+      lastMonth = mLabel;
+    }
+    list.appendChild(makeCard(a, d));
+  });
+}
+
+function makeCard(a, d) {
+  const el = document.createElement('div');
+  el.className = 'ak-card';
+  const isMine = myTilmeldinger.includes(a.id);
+  const pladserLeft = a.pladser ? a.pladser - a.tilmeldte : null;
+  const badgeHtml = isMine
+    ? '<span class="ak-badge" style="background:#e8f0e8;color:var(--olive);">✓ Tilmeldt</span>'
+    : a.badge ? `<span class="ak-badge ${a.badge === 'Vigtigt' ? 'red' : ''}">${a.badge}</span>` : '';
+
+  el.innerHTML = `
+    <div class="ak-date-col">
+      <div class="day">${d.getDate()}</div>
+      <div class="mth">${MAANEDER[d.getMonth()].slice(0,3)}</div>
+      <div class="dow">${DAGE_SHORT[d.getDay() === 0 ? 6 : d.getDay()-1]}</div>
+    </div>
+    <div class="ak-body">
+      <div class="ak-top">
+        <div class="ak-type">${a.type}</div>
+        <div class="ak-title">${a.titel}</div>
+        <div class="ak-meta">
+          <span>⏰ ${a.tid}</span>
+          <span>📍 ${a.sted}</span>
+          ${a.pladser ? `<span>👥 ${pladserLeft} pladser tilbage</span>` : ''}
+        </div>
+        ${badgeHtml}
+      </div>
+    </div>
+    <div class="ak-arrow">›</div>
+  `;
+  el.onclick = () => openSheet(a);
+  return el;
+}
+
+/* ── Sheet ── */
+function openSheet(a) {
+  activeActivity = a;
+  const d = new Date(a.dato);
+
+  document.getElementById('sh-type').textContent = a.type;
+  document.getElementById('sh-title').textContent = a.titel;
+  document.getElementById('sh-desc').textContent = a.beskrivelse;
+
+  const pladserLeft = a.pladser ? a.pladser - a.tilmeldte : null;
+  document.getElementById('sh-details').innerHTML = `
+    <div class="sheet-det-chip">📅 ${d.getDate()}. ${MAANEDER[d.getMonth()]} ${d.getFullYear()}</div>
+    <div class="sheet-det-chip">⏰ ${a.tid}</div>
+    <div class="sheet-det-chip">📍 ${a.sted}</div>
+    ${pladserLeft !== null ? `<div class="sheet-det-chip">👥 ${pladserLeft} pladser</div>` : ''}
+  `;
+
+  // Reset form
+  document.getElementById('sheet-content').style.display = 'block';
+  document.getElementById('confirm-view').classList.remove('show');
+  ['f-fornavn','f-efternavn','f-tlf','f-email','f-besked'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+
+  document.getElementById('sheet-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSheet() {
+  document.getElementById('sheet-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  activeActivity = null;
+}
+
+function closeSheetOverlay(e) {
+  if (e.target === document.getElementById('sheet-overlay')) closeSheet();
+}
+
+function submitTilmelding() {
+  const fornavn  = document.getElementById('f-fornavn').value.trim();
+  const efternavn = document.getElementById('f-efternavn').value.trim();
+  const tlf      = document.getElementById('f-tlf').value.trim();
+  const email    = document.getElementById('f-email').value.trim();
+
+  if (!fornavn || !efternavn || !tlf) {
+    alert('Udfyld venligst fornavn, efternavn og telefon.');
+    return;
+  }
+
+  // Save to local storage
+  if (activeActivity && !myTilmeldinger.includes(activeActivity.id)) {
+    myTilmeldinger.push(activeActivity.id);
+    localStorage.setItem('dv_tilmeldinger', JSON.stringify(myTilmeldinger));
+    // Increment counter locally
+    AKTIVITETER.find(a => a.id === activeActivity.id).tilmeldte++;
+  }
+
+  // Show confirm
+  document.getElementById('sheet-content').style.display = 'none';
+  document.getElementById('confirm-txt').innerHTML =
+    `<strong>${fornavn}</strong>, du er tilmeldt<br><strong>${activeActivity.titel}</strong><br><br>
+     ${email ? 'En bekræftelse sendes til ' + email + '.' : 'Kontakt os på tlf. 22 14 09 59 ved spørgsmål.'}`;
+  document.getElementById('confirm-view').classList.add('show');
+
+  renderList();
+}
+
+/* ── View toggle ── */
+function setView(v) {
+  currentView = v;
+  document.getElementById('vt-all').classList.toggle('active', v === 'all');
+  document.getElementById('vt-mine').classList.toggle('active', v === 'mine');
+  renderList();
+}
+
+/* ── Go to main site ── */
+function goToSite(hash) {
+  window.open('djursveteraner-v2.html' + (hash || ''), '_blank');
+}
+
+/* ── Init ── */
+renderCalendar();
+renderList();
+</script>
+
+<!-- PWA INSTALL BANNER -->
+<div id="install-banner" style="display:none;position:fixed;top:0;left:0;right:0;background:var(--dark);color:white;z-index:9999;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:3px solid var(--sand);max-width:430px;margin:0 auto;">
+  <div style="display:flex;align-items:center;gap:10px;flex:1;">
+    <div style="width:36px;height:36px;background:var(--sand);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;color:var(--olive);flex-shrink:0;">DV</div>
+    <div style="font-family:'Oswald',sans-serif;font-size:0.8rem;letter-spacing:0.5px;">
+      <div style="font-weight:600;color:white;">Installer app</div>
+      <div style="font-size:0.68rem;color:rgba(255,255,255,0.55);letter-spacing:0.5px;">Tilføj til hjemmeskærm</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <button onclick="dismissInstall()" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:7px 12px;border-radius:6px;font-family:'Oswald',sans-serif;font-size:0.7rem;letter-spacing:1px;cursor:pointer;">Nej tak</button>
+    <button id="install-btn" onclick="installApp()" style="background:var(--red);border:none;color:white;padding:7px 14px;border-radius:6px;font-family:'Oswald',sans-serif;font-size:0.7rem;letter-spacing:1px;cursor:pointer;">Installer</button>
+  </div>
+</div>
+
+<!-- iOS INSTALL GUIDE (vises kun på Safari/iOS) -->
+<div id="ios-banner" style="display:none;position:fixed;bottom:80px;left:12px;right:12px;background:var(--dark);color:white;border-radius:14px;padding:16px 18px;z-index:9999;border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 30px rgba(0,0,0,0.4);max-width:406px;margin:0 auto;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+    <div style="font-family:'Oswald',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:1px;color:var(--sand);">📲 Installer på din iPhone/iPad</div>
+    <button onclick="document.getElementById('ios-banner').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:1rem;cursor:pointer;padding:0 0 0 12px;">✕</button>
+  </div>
+  <ol style="padding-left:18px;font-size:0.8rem;color:rgba(255,255,255,0.75);line-height:1.8;">
+    <li>Tryk på <strong style="color:white;">Del-ikonet</strong> <span style="font-size:1rem;">⬆️</span> i bunden af Safari</li>
+    <li>Scroll ned og tryk <strong style="color:white;">"Føj til hjemmeskærm"</strong></li>
+    <li>Tryk <strong style="color:white;">"Tilføj"</strong> — færdig! ✓</li>
+  </ol>
+  <div style="margin-top:10px;font-size:0.72rem;color:rgba(255,255,255,0.35);font-style:italic;">Appen virker offline og opdateres automatisk</div>
+</div>
+
+<script>
+// PWA Install
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-banner').style.display = 'flex';
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+      document.getElementById('install-banner').style.display = 'none';
+    });
+  }
+}
+
+function dismissInstall() {
+  document.getElementById('install-banner').style.display = 'none';
+  localStorage.setItem('install_dismissed', '1');
+}
+
+// iOS detection
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.navigator.standalone === true;
+const dismissed = localStorage.getItem('ios_install_dismissed');
+
+if (isIOS && !isStandalone && !dismissed) {
+  setTimeout(() => {
+    document.getElementById('ios-banner').style.display = 'block';
+  }, 3000);
+}
+
+document.getElementById('ios-banner').querySelector('button').addEventListener('click', () => {
+  localStorage.setItem('ios_install_dismissed', '1');
+});
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>

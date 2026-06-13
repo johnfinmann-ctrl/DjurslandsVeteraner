@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Djurslands Veteraner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   NORDIC OPERATIONS — VETERANHJEMMESIDE TEMPLATE v2.0
+   Skift forening ved at redigere CONFIG-blokken herunder.
+   Alt andet tilpasser sig automatisk.
+   ════════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  /* Foreningens identitet */
+  navn:         "Djurslands Veteraner",
+  undertitel:   "Forening for veteraner på Djursland",
+  initialer:    "DV",
+  tagline:      "Et fællesskab for dem, der har tjent. For dem, der forstår.",
+  stiftetsAar:  2016,
+
+  /* Kontakt */
+  adresse:      "Ålsrodevej 1",
+  postnrBy:     "8500 Grenaa",
+  region:       "Djursland · Danmark",
+  telefon:      "22 14 09 59",
+  email:        "info@djursveteraner.dk",
+  cvr:          "38588451",
+
+  /* Sociale medier */
+  facebook:     "https://www.facebook.com/DjurslandsVeteraner/",
+  facebookGruppe: "https://www.facebook.com/groups/djurslandsveteraner",
+
+  /* Støttemedlemskab */
+  kontingent:   "205",
+
+  /* Juridisk / template-ejer */
+  templateEjer: "Nordic Operations",
+  aargang:      "2026",
+
+  /* Farver — primær og accent (hex) */
+  farverPrimaer: "#4a5240",
+  farverAccent:  "#8b2020",
+  farverSand:    "#c8b99a",
+};
+</script>
+
+<style>
+  :root {
+    --olive:      #4a5240;
+    --olive-l:    #6b7560;
+    --olive-pale: #eceee8;
+    --sand:       #c8b99a;
+    --sand-light: #f5f0e8;
+    --red:        #8b2020;
+    --red-l:      #a82828;
+    --white:      #fafaf8;
+    --dark:       #1a1a17;
+    --mid:        #3d3d38;
+    --border:     rgba(74,82,64,0.16);
+    --radius:     6px;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--white);
+    color: var(--dark);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── COOKIE BANNER ── */
+  #cookie-banner {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--dark);
+    color: rgba(255,255,255,0.85);
+    z-index: 9999;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+    border-top: 3px solid var(--sand);
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+  }
+  #cookie-banner.hidden { transform: translateY(110%); }
+  .cookie-text { font-size: 0.83rem; flex: 1; min-width: 200px; }
+  .cookie-text a { color: var(--sand); }
+  .cookie-btns { display: flex; gap: 10px; flex-shrink: 0; }
+  .cookie-accept, .cookie-reject {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 9px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .cookie-accept { background: var(--red); color: white; }
+  .cookie-accept:hover { background: var(--red-l); }
+  .cookie-reject { background: rgba(255,255,255,0.1); color: white; }
+  .cookie-reject:hover { background: rgba(255,255,255,0.2); }
+
+  /* ── MODAL OVERLAY (juridiske sider) ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 8000;
+    overflow-y: auto;
+    padding: 40px 20px;
+  }
+  .modal-overlay.open { display: block; }
+  .modal-box {
+    background: var(--white);
+    max-width: 760px;
+    margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .modal-header {
+    background: var(--olive);
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .modal-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.3); }
+  .modal-body {
+    padding: 32px;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--mid);
+  }
+  .modal-body h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--olive);
+    margin: 24px 0 8px;
+  }
+  .modal-body h3:first-child { margin-top: 0; }
+  .modal-body p { margin-bottom: 12px; }
+  .modal-body ul { padding-left: 20px; margin-bottom: 12px; }
+  .modal-body ul li { margin-bottom: 6px; }
+  .modal-body .legal-stamp {
+    margin-top: 28px;
+    padding: 16px;
+    background: var(--olive-pale);
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    border-left: 4px solid var(--olive);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--olive);
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  }
+  .header-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 13px;
+    text-decoration: none;
+  }
+  .logo-badge {
+    width: 44px; height: 44px;
+    background: var(--sand);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 17px; font-weight: 700;
+    color: var(--olive);
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+  .logo-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.05rem; font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+  }
+  .logo-text span {
+    display: block;
+    font-size: 0.65rem; font-weight: 300;
+    color: var(--sand);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  nav { display: flex; align-items: center; gap: 0; }
+  nav > a, nav > .nav-dd > a {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.82);
+    text-decoration: none;
+    padding: 0.55rem 0.9rem;
+    transition: color 0.2s;
+    white-space: nowrap;
+    display: block;
+  }
+  nav > a:hover, nav > .nav-dd > a:hover { color: var(--sand); }
+
+  .nav-dd { position: relative; }
+  .nav-dd > a::after { content: ' ▾'; font-size: 0.65rem; }
+  .dd-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    background: var(--dark);
+    min-width: 210px;
+    border-top: 3px solid var(--sand);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    border-radius: 0 0 var(--radius) var(--radius);
+  }
+  .nav-dd:hover .dd-menu { display: block; }
+  .dd-menu a {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    padding: 11px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.15s, background 0.15s;
+  }
+  .dd-menu a:last-child { border-bottom: none; }
+  .dd-menu a:hover { color: var(--sand); background: rgba(255,255,255,0.04); }
+
+  .nav-cta {
+    background: var(--red) !important;
+    color: white !important;
+    padding: 0.5rem 1.1rem !important;
+    border-radius: 3px;
+    margin-left: 6px;
+  }
+  .nav-cta:hover { background: var(--red-l) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--olive);
+    background-image:
+      linear-gradient(135deg, rgba(0,0,0,0.15) 0%, transparent 60%),
+      repeating-linear-gradient(45deg, transparent, transparent 50px, rgba(0,0,0,0.025) 50px, rgba(0,0,0,0.025) 51px);
+    padding: 88px 2rem 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 64px;
+    background: var(--white);
+    clip-path: ellipse(54% 100% at 50% 100%);
+  }
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--sand);
+    border: 1px solid rgba(200,185,154,0.5);
+    padding: 5px 16px;
+    border-radius: 2px;
+    margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+    font-weight: 700;
+    color: white;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1.0;
+    margin-bottom: 18px;
+  }
+  .hero h1 em { font-style: normal; color: var(--sand); }
+  .hero p {
+    color: rgba(255,255,255,0.72);
+    font-size: 1.05rem;
+    font-style: italic;
+    max-width: 500px;
+    margin: 0 auto 34px;
+  }
+  .hero-btns {
+    display: flex; gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 13px 28px;
+    border-radius: 3px;
+    transition: all 0.2s;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-red { background: var(--red); color: white; }
+  .btn-red:hover { background: var(--red-l); transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.45); }
+  .btn-outline:hover { border-color: var(--sand); color: var(--sand); }
+  .btn-olive { background: var(--olive); color: white; }
+  .btn-olive:hover { background: var(--olive-l); }
+  .btn-sm {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 7px 15px;
+    border-radius: 3px;
+    background: var(--olive);
+    color: white;
+    display: inline-block;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-sm:hover { background: var(--red); }
+
+  /* ── QUICKLINKS ── */
+  .quicklinks {
+    background: var(--sand-light);
+    border-bottom: 1px solid var(--border);
+  }
+  .ql-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .ql-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 20px 16px;
+    text-decoration: none;
+    color: var(--mid);
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .ql-item:last-child { border-right: none; }
+  .ql-item:hover { background: rgba(74,82,64,0.07); }
+  .ql-ico {
+    width: 38px; height: 38px;
+    background: var(--olive);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+  }
+  .ql-lbl {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--olive);
+    display: block;
+  }
+  .ql-sub { font-size: 0.72rem; color: var(--olive-l); }
+
+  /* ── SECTION ── */
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 72px 2rem; }
+  .wrap-alt { background: var(--sand-light); }
+
+  .sec-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.75rem; font-weight: 600;
+    color: var(--olive);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .sec-title::after {
+    content: '';
+    display: block;
+    width: 48px; height: 3px;
+    background: var(--red);
+    margin-top: 10px;
+  }
+  .sec-sub {
+    color: var(--olive-l);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 36px;
+  }
+
+  /* ── NEWS ── */
+  .news-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 22px; }
+
+  .news-feat {
+    background: var(--olive-pale);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .news-feat-img {
+    height: 200px;
+    background: linear-gradient(135deg, var(--olive) 0%, var(--mid) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+  }
+  .news-feat-body { padding: 24px; }
+  .tag {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    background: var(--olive-pale);
+    color: var(--olive);
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .tag.red { background: #fde8e8; color: var(--red); border-color: rgba(139,32,32,0.2); }
+  .news-feat-body h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.25rem; font-weight: 600;
+    color: var(--dark);
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .news-feat-body p { font-size: 0.88rem; color: var(--mid); margin-bottom: 16px; }
+  .news-foot { display: flex; justify-content: space-between; align-items: center; }
+  .read-more {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.73rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 5px;
+    cursor: pointer; background: none; border: none;
+  }
+  .read-more::after { content: '→'; }
+  .read-more:hover { color: var(--olive); }
+  .news-date { font-size: 0.73rem; color: var(--olive-l); font-style: italic; }
+
+  .news-list { display: flex; flex-direction: column; gap: 12px; }
+  .news-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--olive);
+    border-radius: 0 4px 4px 0;
+    padding: 15px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+    transition: border-left-color 0.2s;
+  }
+  .news-item:hover { border-left-color: var(--red); }
+  .news-item h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.92rem; font-weight: 600;
+    color: var(--dark);
+    margin: 6px 0 3px;
+    line-height: 1.3;
+  }
+  .news-item p { font-size: 0.78rem; color: var(--olive-l); }
+
+  /* ── AKTIVITETER ── */
+  .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .ev-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .ev-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+  .ev-date {
+    background: var(--olive);
+    color: white;
+    text-align: center;
+    padding: 16px 12px;
+    font-family: 'Oswald', sans-serif;
+  }
+  .ev-date .day { font-size: 2rem; font-weight: 700; line-height: 1; }
+  .ev-date .mth { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--sand); }
+  .ev-body { padding: 16px; }
+  .ev-body h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.98rem; font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+  .ev-body p { font-size: 0.8rem; color: var(--mid); margin-bottom: 10px; }
+  .ev-meta { font-size: 0.73rem; color: var(--olive-l); display: flex; gap: 12px; margin-bottom: 12px; }
+
+  /* ── ORGANISATION ── */
+  .org-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .org-card {
+    background: var(--white);
+    padding: 28px 22px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .org-card:hover { background: var(--olive-pale); }
+  .org-card.dark { background: var(--olive); }
+  .org-card.dark:hover { background: #3d4636; }
+  .org-ico { font-size: 1.8rem; margin-bottom: 12px; }
+  .org-card h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--olive);
+    margin-bottom: 7px;
+  }
+  .org-card.dark h4 { color: var(--sand); }
+  .org-card p { font-size: 0.8rem; color: var(--mid); line-height: 1.55; }
+  .org-card.dark p { color: rgba(255,255,255,0.68); }
+
+  /* ── BESTYRELSE ── */
+  .board-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .board-card {
+    text-align: center;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 16px 20px;
+  }
+  .board-av {
+    width: 70px; height: 70px;
+    background: var(--olive-pale);
+    border-radius: 50%;
+    border: 3px solid var(--olive);
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--olive);
+  }
+  .board-card h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.92rem; font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 3px;
+  }
+  .board-role {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+  .board-info { font-size: 0.76rem; color: var(--olive-l); }
+  .board-info a { color: var(--olive); text-decoration: none; }
+  .board-info a:hover { color: var(--red); }
+
+  /* ── DOKUMENTER ── */
+  .docs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .doc-card {
+    display: flex; align-items: center; gap: 13px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 17px 15px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .doc-card:hover { border-color: var(--olive); box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+  .doc-ico {
+    width: 42px; height: 42px;
+    background: var(--olive-pale);
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .doc-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.88rem; font-weight: 600;
+    color: var(--dark);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .doc-type { font-size: 0.7rem; color: var(--olive-l); }
+
+  /* ── STØT OS BAND ── */
+  .support-band {
+    background: var(--red);
+    padding: 56px 2rem;
+    text-align: center;
+  }
+  .support-band h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.9rem; font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+  .support-band p {
+    color: rgba(255,255,255,0.78);
+    font-style: italic;
+    margin-bottom: 28px;
+    max-width: 480px;
+    margin-left: auto; margin-right: auto;
+  }
+  .support-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-white { background: white; color: var(--red); }
+  .btn-white:hover { background: #f0f0ee; }
+
+  /* ── SAMARBEJDE ── */
+  .sponsors-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .sponsor-slot {
+    background: var(--white);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--olive-l);
+  }
+
+  /* ── KONTAKT ── */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .contact-info h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--olive);
+    margin-bottom: 22px;
+  }
+  .c-line { display: flex; gap: 13px; margin-bottom: 15px; align-items: flex-start; }
+  .c-ico {
+    width: 34px; height: 34px;
+    background: var(--olive-pale);
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .c-detail { font-size: 0.87rem; color: var(--mid); }
+  .c-detail strong {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 2px;
+  }
+  .c-detail a { color: var(--mid); text-decoration: none; }
+  .c-detail a:hover { color: var(--red); }
+  .social-row { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .soc-btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 9px 16px;
+    border: 2px solid var(--border);
+    border-radius: 3px;
+    color: var(--olive);
+    transition: all 0.2s;
+  }
+  .soc-btn:hover { border-color: var(--olive); background: var(--olive-pale); }
+  .map-box {
+    background: var(--olive-pale);
+    border-radius: 8px;
+    height: 260px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--olive-l);
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); color: rgba(255,255,255,0.6); padding: 52px 2rem 28px; }
+  .foot-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2.2fr 1fr 1fr 1fr;
+    gap: 44px;
+    margin-bottom: 36px;
+  }
+  .foot-brand p { font-size: 0.82rem; margin-top: 16px; line-height: 1.65; }
+  .foot-brand .logo-text { color: white; }
+  footer h5 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 15px;
+  }
+  footer ul { list-style: none; }
+  footer ul li { margin-bottom: 9px; }
+  footer ul li a, footer ul li button {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    background: none; border: none; cursor: pointer;
+    font-family: inherit;
+    transition: color 0.2s;
+    padding: 0;
+  }
+  footer ul li a:hover, footer ul li button:hover { color: var(--sand); }
+  .foot-bottom {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.28);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .foot-bottom a { color: rgba(255,255,255,0.28); text-decoration: none; }
+  .foot-bottom a:hover { color: var(--sand); }
+
+  /* ── NEWS MODAL ── */
+  .news-detail-header { background: var(--olive-pale); padding: 20px 32px; border-bottom: 1px solid var(--border); }
+  .news-detail-header .tag { margin-bottom: 8px; }
+  .news-detail-header h2 { font-family: 'Oswald', sans-serif; font-size: 1.5rem; color: var(--dark); font-weight: 600; }
+  .news-detail-body { padding: 28px 32px; font-size: 0.9rem; line-height: 1.8; color: var(--mid); }
+  .news-detail-body p { margin-bottom: 14px; }
+
+  /* ── UTILS ── */
+  .tc { text-align: center; }
+  .mt-8 { margin-top: 8px; }
+  .mt-20 { margin-top: 20px; }
+  .mt-32 { margin-top: 32px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero h1 { animation: fadeUp 0.55s ease both; }
+  .hero p  { animation: fadeUp 0.55s 0.1s ease both; }
+  .hero-btns { animation: fadeUp 0.55s 0.18s ease both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    .ql-inner { grid-template-columns: repeat(2, 1fr); }
+    .news-grid { grid-template-columns: 1fr; }
+    .events-grid { grid-template-columns: 1fr 1fr; }
+    .org-grid { grid-template-columns: 1fr 1fr; }
+    .board-grid { grid-template-columns: repeat(2, 1fr); }
+    .docs-grid { grid-template-columns: 1fr 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .foot-inner { grid-template-columns: 1fr 1fr; }
+    nav { display: none; }
+    .sponsors-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .ql-inner { grid-template-columns: 1fr; }
+    .events-grid { grid-template-columns: 1fr; }
+    .org-grid { grid-template-columns: 1fr; }
+    .board-grid { grid-template-columns: 1fr; }
+    .docs-grid { grid-template-columns: 1fr; }
+    .foot-inner { grid-template-columns: 1fr; }
+    .sponsors-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ COOKIE BANNER ═══════════════════════════════ -->
+<div id="cookie-banner">
+  <div class="cookie-text">
+    Vi bruger cookies til at forbedre din oplevelse. Læs mere i vores
+    <button class="read-more" onclick="openModal('modal-cookie')" style="color:var(--sand);background:none;border:none;cursor:pointer;font-size:0.83rem;">cookiepolitik</button>.
+  </div>
+  <div class="cookie-btns">
+    <button class="cookie-reject" onclick="closeCookie()">Afvis ikke-nødvendige</button>
+    <button class="cookie-accept" onclick="closeCookie()">Acceptér alle</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ MODALS ═══════════════════════════════ -->
+
+<!-- NYHED MODAL -->
+<div class="modal-overlay" id="modal-nyhed">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Nyhed</h2>
+      <button class="modal-close" onclick="closeModal('modal-nyhed')">✕</button>
+    </div>
+    <div class="news-detail-header">
+      <div class="tag">Nyhed</div>
+      <h2>Velkommen til Djurslands Veteraners nye hjemmeside</h2>
+    </div>
+    <div class="news-detail-body">
+      <p>Vi har fået en ny digital platform — her samles alt det vigtige: aktiviteter, dokumenter, bestyrelse og kontakt.</p>
+      <p>Vi opfordrer alle medlemmer til at oprette profil og holde oplysninger opdateret. Det tager kun 2 minutter, men er til stor hjælp for foreningen.</p>
+      <p>Hjemmesiden vil løbende blive udvidet med flere funktioner. Har du rettelser eller idéer, er du velkommen til at kontakte bestyrelsen.</p>
+      <p class="news-date" style="margin-top:20px;">Publiceret: Maj 2026</p>
+    </div>
+  </div>
+</div>
+
+<!-- CAFE EBELTOFT MODAL -->
+<div class="modal-overlay" id="modal-cafe-eb">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Veterancafé Ebeltoft</h2>
+      <button class="modal-close" onclick="closeModal('modal-cafe-eb')">✕</button>
+    </div>
+    <div class="news-detail-body">
+      <p><strong>Veterancafé Ebeltoft</strong> holder åbent den første mandag i hver måned.</p>
+      <p>Tid: <strong>Kl. 14:00–17:00</strong><br>Sted: Ebeltoft</p>
+      <p>Kaffe, snak og samvær. Alle veteraner og pårørende er velkomne — ingen tilmelding nødvendig.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CAFE KOLIND MODAL -->
+<div class="modal-overlay" id="modal-cafe-ko">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Veterancafé Kolind</h2>
+      <button class="modal-close" onclick="closeModal('modal-cafe-ko')">✕</button>
+    </div>
+    <div class="news-detail-body">
+      <p><strong>Veterancafé Kolind</strong> er åben igen efter pause.</p>
+      <p>Tid: <strong>Kl. 14:00–17:00</strong><br>Sted: Kolind</p>
+      <p>Mød dine medborgere — i Kolind. Vi glæder os til at se jer igen.</p>
+    </div>
+  </div>
+</div>
+
+<!-- GENERALFORSAMLING MODAL -->
+<div class="modal-overlay" id="modal-gf">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Generalforsamling 2026</h2>
+      <button class="modal-close" onclick="closeModal('modal-gf')">✕</button>
+    </div>
+    <div class="news-detail-body">
+      <p>Datoen for årets generalforsamling er fastsat. Alle medlemmer opfordres til at deltage.</p>
+      <p><strong>Dagsorden:</strong></p>
+      <ul style="padding-left:20px;margin-bottom:14px;">
+        <li>Valg af dirigent</li>
+        <li>Formandens beretning</li>
+        <li>Regnskab og budget</li>
+        <li>Indkomne forslag</li>
+        <li>Valg til bestyrelsen</li>
+        <li>Eventuelt</li>
+      </ul>
+      <p>Kontakt bestyrelsen for tilmelding og nærmere oplysninger om tid og sted.</p>
+    </div>
+  </div>
+</div>
+
+<!-- VEDTÆGTER MODAL -->
+<div class="modal-overlay" id="modal-vedtaegter">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Vedtægter</h2>
+      <button class="modal-close" onclick="closeModal('modal-vedtaegter')">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3>§1 Navn og hjemsted</h3>
+      <p>Foreningens navn er Djurslands Veteraner. Foreningen er hjemmehørende i Syddjurs Kommune.</p>
+      <h3>§2 Formål</h3>
+      <p>Foreningens formål er at skabe netværk og fællesskab for veteraner på Djursland, samt at yde støtte og rådgivning til veteraner og deres pårørende.</p>
+      <h3>§3 Medlemskab</h3>
+      <p>Alle veteraner er gratis medlemmer af foreningen. Støttemedlemmer betaler 205 kr. pr. år.</p>
+      <h3>§4 Generalforsamling</h3>
+      <p>Foreningens øverste myndighed er generalforsamlingen, der afholdes én gang årligt. Alle medlemmer har stemmeret.</p>
+      <h3>§5 Bestyrelsen</h3>
+      <p>Foreningen ledes af en bestyrelse på minimum 3 og maksimum 7 medlemmer. Formand og kasserer kan ikke være samme person.</p>
+      <div class="legal-stamp">
+        📋 Dette er et uddrag. Det fulde dokument kan rekvireres ved henvendelse til bestyrelsen på <a href="mailto:info@djursveteraner.dk">info@djursveteraner.dk</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVATLIVSPOLITIK MODAL -->
+<div class="modal-overlay" id="modal-privacy">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Privatlivspolitik (GDPR)</h2>
+      <button class="modal-close" onclick="closeModal('modal-privacy')">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3>Dataansvarlig</h3>
+      <p>Djurslands Veteraner · Ålsrodevej 1, 8500 Grenaa · CVR: 38588451 · info@djursveteraner.dk</p>
+
+      <h3>Hvilke oplysninger behandler vi?</h3>
+      <p>Vi behandler navn, adresse, e-mail, telefonnummer og evt. militær baggrund som du selv oplyser ved oprettelse af profil.</p>
+
+      <h3>Formål og hjemmel</h3>
+      <p>Oplysningerne bruges til administration af medlemskab, udsendelse af nyheder og invitationer til arrangementer. Hjemlen er GDPR artikel 6(1)(b) — opfyldelse af aftale.</p>
+
+      <h3>Opbevaring og sletning</h3>
+      <p>Personoplysninger slettes senest 2 år efter ophør af medlemskab, medmindre lovgivning kræver længere opbevaring.</p>
+
+      <h3>Dine rettigheder</h3>
+      <ul>
+        <li>Ret til indsigt i egne oplysninger</li>
+        <li>Ret til berigtigelse af forkerte oplysninger</li>
+        <li>Ret til sletning ("retten til at blive glemt")</li>
+        <li>Ret til at gøre indsigelse mod behandling</li>
+        <li>Ret til dataportabilitet</li>
+      </ul>
+
+      <h3>Klage</h3>
+      <p>Du kan klage til Datatilsynet, Carl Jacobsens Vej 35, 2500 Valby · <a href="https://www.datatilsynet.dk" target="_blank">datatilsynet.dk</a></p>
+
+      <div class="legal-stamp">Sidst opdateret: Januar 2026 · Udarbejdet med bistand fra Nordic Operations</div>
+    </div>
+  </div>
+</div>
+
+<!-- COOKIEPOLITIK MODAL -->
+<div class="modal-overlay" id="modal-cookie">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Cookiepolitik</h2>
+      <button class="modal-close" onclick="closeModal('modal-cookie')">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3>Hvad er cookies?</h3>
+      <p>Cookies er små tekstfiler der gemmes i din browser, når du besøger en hjemmeside. De bruges til at huske dine præferencer og forbedre funktionaliteten.</p>
+
+      <h3>Hvilke cookies bruger vi?</h3>
+      <p><strong>Nødvendige cookies</strong> — teknisk nødvendige for at siden fungerer (login, sessioner). Kan ikke frameldes.</p>
+      <p><strong>Funktionelle cookies</strong> — husker dine præferencer som f.eks. sprog og indstillinger. Kan frameldes.</p>
+      <p><strong>Statistiske cookies</strong> — anonymiserede data om brug af siden til forbedring. Kræver samtykke.</p>
+
+      <h3>Tredjepartscookies</h3>
+      <p>Vi bruger Facebook-integration (sociale knapper). Facebook kan placere egne cookies — se Facebooks cookiepolitik for detaljer.</p>
+
+      <h3>Sletning af cookies</h3>
+      <p>Du kan til enhver tid slette cookies i din browsers indstillinger. Bemærk at dette kan påvirke sidens funktionalitet.</p>
+
+      <div class="legal-stamp">Sidst opdateret: Januar 2026 · Djurslands Veteraner · CVR: 38588451</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICEVILKÅR MODAL -->
+<div class="modal-overlay" id="modal-vilkaar">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Servicevilkår &amp; Handelsbetingelser</h2>
+      <button class="modal-close" onclick="closeModal('modal-vilkaar')">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3>Generelt</h3>
+      <p>Disse vilkår gælder for brug af Djurslands Veteraners hjemmeside og køb i foreningens butik.</p>
+
+      <h3>Støttemedlemskab og betaling</h3>
+      <p>Støttemedlemskab koster 205 kr. pr. år. Betaling sker via de betalingsmetoder, der er angivet ved tilmelding. Kontingent er ikke refunderbart efter generalforsamlingens afholdelse i det pågældende år.</p>
+
+      <h3>Merchandise og butik</h3>
+      <p>Alle priser er i DKK inkl. moms. Fortrudsret er 14 dage fra modtagelse, jf. forbrugeraftaleloven. Returnering sker for købers regning medmindre varen er defekt.</p>
+
+      <h3>Immaterielle rettigheder</h3>
+      <p>Alt indhold på hjemmesiden — tekster, billeder, logo og design — er ophavsretligt beskyttet. Brug kræver skriftlig tilladelse fra Djurslands Veteraner og Nordic Operations.</p>
+
+      <h3>Ansvar</h3>
+      <p>Djurslands Veteraner er ikke ansvarlig for indirekte tab, følgeskader eller tab opstået ved tekniske fejl på hjemmesiden.</p>
+
+      <div class="legal-stamp">Sidst opdateret: Januar 2026 · Djurslands Veteraner · CVR: 38588451</div>
+    </div>
+  </div>
+</div>
+
+<!-- ANSVARSFRASKRIVELSE MODAL -->
+<div class="modal-overlay" id="modal-ansvar">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Ansvarsfraskrivelse</h2>
+      <button class="modal-close" onclick="closeModal('modal-ansvar')">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3>Indholdsansvar</h3>
+      <p>Indholdet på denne hjemmeside er udarbejdet til generel information. Vi tilstræber at holde informationerne korrekte og opdaterede, men kan ikke garantere fuldstændighed eller aktualitet.</p>
+
+      <h3>Rådgivning</h3>
+      <p>Indhold på hjemmesiden udgør ikke juridisk, medicinsk, psykologisk eller finansiel rådgivning. For konkret vejledning i veteranrelaterede spørgsmål henvises til Veterancentret, Forsvarsministeriets rådgivning eller anden faglig instans.</p>
+
+      <h3>Tredjepartslinks</h3>
+      <p>Hjemmesiden kan indeholde links til eksterne sider. Vi har ingen kontrol over eksternt indhold og påtager os ikke ansvar herfor.</p>
+
+      <h3>Tekniske fejl</h3>
+      <p>Foreningen er ikke ansvarlig for tab eller ulemper forårsaget af tekniske fejl, nedbrud eller manglende tilgængelighed.</p>
+
+      <h3>AI-assisteret indhold</h3>
+      <p>Dele af det administrative materiale er udarbejdet med AI-assistance. Alt indhold er gennemgået og godkendt af foreningens bestyrelse, men brugere opfordres til at verificere væsentlige oplysninger direkte med foreningen.</p>
+
+      <div class="legal-stamp">Sidst opdateret: Januar 2026 · Nordic Operations for Djurslands Veteraner</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <a href="#top" class="logo">
+      <div class="logo-badge" id="hdr-initials">DV</div>
+      <div class="logo-text">
+        <span id="hdr-navn">Djurslands Veteraner</span>
+        <span id="hdr-under">Forening for veteraner på Djursland</span>
+      </div>
+    </a>
+    <nav>
+      <a href="#nyheder">Nyheder</a>
+      <a href="#aktiviteter">Aktiviteter</a>
+      <div class="nav-dd">
+        <a href="#organisation">Organisation</a>
+        <div class="dd-menu">
+          <a href="#bestyrelse">Bestyrelsen</a>
+          <a href="#dokumenter" onclick="openModal('modal-vedtaegter');return false;">Vedtægter</a>
+          <a href="#dokumenter">Dokumenter</a>
+          <a href="#samarbejde">Samarbejdspartnere</a>
+        </div>
+      </div>
+      <a href="#galleri">Galleri</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#stoet-os" class="nav-cta">Støt os</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-badge" id="hero-region">Djursland · Danmark</div>
+  <h1 id="hero-h1">Djurslands<br><em>Veteraner</em></h1>
+  <p id="hero-tagline">Et fællesskab for dem, der har tjent. For dem, der forstår.</p>
+  <div class="hero-btns">
+    <a href="#aktiviteter" class="btn btn-red">Se aktiviteter</a>
+    <a href="#stoet-os" class="btn btn-outline">Bliv støttemedlem</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ QUICKLINKS ═══════════════════════════════ -->
+<div class="quicklinks">
+  <div class="ql-inner">
+    <a href="#nyheder" class="ql-item">
+      <div class="ql-ico">📰</div>
+      <div><span class="ql-lbl">Nyheder</span><span class="ql-sub">Seneste fra foreningen</span></div>
+    </a>
+    <a href="#aktiviteter" class="ql-item">
+      <div class="ql-ico">📅</div>
+      <div><span class="ql-lbl">Aktiviteter</span><span class="ql-sub">Kommende arrangementer</span></div>
+    </a>
+    <a href="#dokumenter" class="ql-item">
+      <div class="ql-ico">📋</div>
+      <div><span class="ql-lbl">Vedtægter &amp; Dokumenter</span><span class="ql-sub">Officielle dokumenter</span></div>
+    </a>
+    <a href="#kontakt" class="ql-item">
+      <div class="ql-ico">📞</div>
+      <div><span class="ql-lbl">Kontakt</span><span class="ql-sub">Find os eller skriv til os</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ NYHEDER ═══════════════════════════════ -->
+<section id="nyheder">
+  <div class="wrap">
+    <div class="sec-title">Nyheder</div>
+    <div class="sec-sub">Aktuelle nyheder og meddelelser fra foreningen</div>
+    <div class="news-grid">
+      <div class="news-feat">
+        <div class="news-feat-img">🪖</div>
+        <div class="news-feat-body">
+          <div class="tag">Nyhed</div>
+          <h3>Velkommen til Djurslands Veteraners nye hjemmeside</h3>
+          <p>Vi har fået en ny digital platform — her samles alt det vigtige: aktiviteter, dokumenter, bestyrelse og kontakt.</p>
+          <div class="news-foot">
+            <button class="read-more" onclick="openModal('modal-nyhed')">Læs mere</button>
+            <span class="news-date">Maj 2026</span>
+          </div>
+        </div>
+      </div>
+      <div class="news-list">
+        <div class="news-item" onclick="openModal('modal-cafe-eb')" style="cursor:pointer;">
+          <div class="tag">Café</div>
+          <h4>Veterancafé Ebeltoft — første mandag i måneden</h4>
+          <p>Kl. 14–17 · Ebeltoft</p>
+        </div>
+        <div class="news-item" onclick="openModal('modal-gf')" style="cursor:pointer;">
+          <div class="tag red">Vigtigt</div>
+          <h4>Generalforsamling 2026 — dato er fastsat</h4>
+          <p>Se dagsordenen og tilmeld dig nu</p>
+        </div>
+        <div class="news-item" onclick="openModal('modal-cafe-ko')" style="cursor:pointer;">
+          <div class="tag">Café</div>
+          <h4>Veterancafé Kolind åbner igen efter pause</h4>
+          <p>Vi glæder os til at se jer igen</p>
+        </div>
+        <div class="news-item" onclick="openModal('modal-vedtaegter')" style="cursor:pointer;">
+          <div class="tag">Forening</div>
+          <h4>Nye vedtægter vedtaget på generalforsamling</h4>
+          <p>Læs de opdaterede vedtægter her</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ AKTIVITETER ═══════════════════════════════ -->
+<section id="aktiviteter" class="wrap-alt">
+  <div class="wrap">
+    <div class="sec-title">Kommende aktiviteter</div>
+    <div class="sec-sub">Tryk på et arrangement for at tilmelde dig — eller åbn aktivitets-appen</div>
+    <div class="events-grid">
+      <div class="ev-card" onclick="openAppSheet(1)" style="cursor:pointer;">
+        <div class="ev-date"><div class="day">2</div><div class="mth">Juni</div></div>
+        <div class="ev-body">
+          <h4>Veterancafé — Ebeltoft</h4>
+          <p>Første mandag i måneden. Uformel kaffe og samvær. Alle velkomne.</p>
+          <div class="ev-meta"><span>⏰ 14:00–17:00</span><span>📍 Ebeltoft</span></div>
+          <button class="btn-sm" onclick="event.stopPropagation();openAppSheet(1)">Tilmeld</button>
+        </div>
+      </div>
+      <div class="ev-card" onclick="openAppSheet(2)" style="cursor:pointer;">
+        <div class="ev-date"><div class="day">19</div><div class="mth">Juni</div></div>
+        <div class="ev-body">
+          <h4>Veterancafé — Kolind</h4>
+          <p>Mød dine medborgere og snak med folk, der forstår.</p>
+          <div class="ev-meta"><span>⏰ 14:00–17:00</span><span>📍 Kolind</span></div>
+          <button class="btn-sm" onclick="event.stopPropagation();openAppSheet(2)">Tilmeld</button>
+        </div>
+      </div>
+      <div class="ev-card" onclick="openAppSheet(3)" style="cursor:pointer;">
+        <div class="ev-date"><div class="day">26</div><div class="mth">Juni</div></div>
+        <div class="ev-body">
+          <h4>Sommerfest for veteraner</h4>
+          <p>Fællesarrangement for alle medlemmer og pårørende. Grillmad og hygge.</p>
+          <div class="ev-meta"><span>⏰ 16:00–21:00</span><span>📍 Djursland</span></div>
+          <button class="btn-sm" onclick="event.stopPropagation();openAppSheet(3)">Tilmeld</button>
+        </div>
+      </div>
+    </div>
+    <div class="tc mt-32" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <button onclick="openModal('modal-app')" class="btn btn-red">📱 Åbn aktivitets-app</button>
+      <a href="#kontakt" class="btn btn-olive">Se fuldt program</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ ORGANISATION ═══════════════════════════════ -->
+<section id="organisation">
+  <div class="wrap">
+    <div class="sec-title">Om foreningen</div>
+    <div class="sec-sub">Alt du behøver at vide om Djurslands Veteraner</div>
+    <div class="org-grid">
+      <div class="org-card dark" onclick="openModal('modal-vedtaegter')" style="cursor:pointer;">
+        <div class="org-ico">📜</div>
+        <h4>Vedtægter</h4>
+        <p>Foreningens vedtægter — formål, regler og rammer for sammenslutningen.</p>
+      </div>
+      <a href="#bestyrelse" class="org-card">
+        <div class="org-ico">🤝</div>
+        <h4>Bestyrelsen</h4>
+        <p>Mød de valgte bestyrelsesmedlemmer og find kontaktoplysninger.</p>
+      </a>
+      <a href="#dokumenter" class="org-card">
+        <div class="org-ico">🗂️</div>
+        <h4>Dokumenter</h4>
+        <p>Forretningsorden, privatlivspolitik, frivilligpolitik og andre officielle dokumenter.</p>
+      </a>
+      <div class="org-card" onclick="openModal('modal-butik')" style="cursor:pointer;">
+        <div class="org-ico">🏪</div>
+        <h4>Butik &amp; Merchandise</h4>
+        <p>Køb foreningens merchandise og støt samtidig veteranfællesskabet.</p>
+      </div>
+      <a href="#samarbejde" class="org-card">
+        <div class="org-ico">🌐</div>
+        <h4>Samarbejdspartnere</h4>
+        <p>Vi takker vore sponsorer og samarbejdspartnere for deres støtte.</p>
+      </a>
+      <a href="#galleri" class="org-card" onclick="setTimeout(()=>openModal('modal-galleri'),400)">
+        <div class="org-ico">📷</div>
+        <h4>Galleri</h4>
+        <p>Billeder fra foreningens arrangementer og aktiviteter.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ BESTYRELSE ═══════════════════════════════ -->
+<section id="bestyrelse" class="wrap-alt">
+  <div class="wrap">
+    <div class="sec-title">Bestyrelsen</div>
+    <div class="sec-sub">Valgte repræsentanter — kontakt dem direkte</div>
+    <div class="board-grid">
+      <div class="board-card">
+        <div class="board-av">F</div>
+        <h4>Formand</h4>
+        <span class="board-role">Formand</span>
+        <div class="board-info"><a href="mailto:info@djursveteraner.dk">info@djursveteraner.dk</a></div>
+      </div>
+      <div class="board-card">
+        <div class="board-av">N</div>
+        <h4>Næstformand</h4>
+        <span class="board-role">Næstformand</span>
+        <div class="board-info">Kontakt via formanden</div>
+      </div>
+      <div class="board-card">
+        <div class="board-av">K</div>
+        <h4>Kasserer</h4>
+        <span class="board-role">Kasserer</span>
+        <div class="board-info"><a href="mailto:info@djursveteraner.dk">info@djursveteraner.dk</a></div>
+      </div>
+      <div class="board-card">
+        <div class="board-av">S</div>
+        <h4>Sekretær</h4>
+        <span class="board-role">Sekretær</span>
+        <div class="board-info">Kontakt via formanden</div>
+      </div>
+      <div class="board-card">
+        <div class="board-av">B</div>
+        <h4>Bestyrelsesmedlem</h4>
+        <span class="board-role">Menigt medlem</span>
+        <div class="board-info">Kontakt via formanden</div>
+      </div>
+      <div class="board-card">
+        <div class="board-av">B</div>
+        <h4>Bestyrelsesmedlem</h4>
+        <span class="board-role">Menigt medlem</span>
+        <div class="board-info">Kontakt via formanden</div>
+      </div>
+      <div class="board-card">
+        <div class="board-av">S</div>
+        <h4>Suppleant</h4>
+        <span class="board-role">1. suppleant</span>
+        <div class="board-info">Kontakt via formanden</div>
+      </div>
+      <div class="board-card">
+        <div class="board-av">S</div>
+        <h4>Suppleant</h4>
+        <span class="board-role">2. suppleant</span>
+        <div class="board-info">Kontakt via formanden</div>
+      </div>
+    </div>
+    <p style="margin-top:18px;font-size:0.8rem;color:var(--olive-l);font-style:italic;">
+      * Navne og kontaktoplysninger opdateres efter generalforsamlingen.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ DOKUMENTER ═══════════════════════════════ -->
+<section id="dokumenter">
+  <div class="wrap">
+    <div class="sec-title">Vedtægter &amp; Dokumenter</div>
+    <div class="sec-sub">Klik for at læse — alle officielle dokumenter samlet ét sted</div>
+    <div class="docs-grid">
+      <div class="doc-card" onclick="openModal('modal-vedtaegter')" style="cursor:pointer;">
+        <div class="doc-ico">📜</div>
+        <div><span class="doc-title">Vedtægter</span><span class="doc-type">Vedtaget på generalforsamling</span></div>
+      </div>
+      <div class="doc-card" onclick="openModal('modal-vilkaar')" style="cursor:pointer;">
+        <div class="doc-ico">📋</div>
+        <div><span class="doc-title">Forretningsorden</span><span class="doc-type">Bestyrelsens arbejdsgrundlag</span></div>
+      </div>
+      <div class="doc-card" onclick="openModal('modal-privacy')" style="cursor:pointer;">
+        <div class="doc-ico">🤲</div>
+        <div><span class="doc-title">Frivilligpolitik</span><span class="doc-type">For frivillige i foreningen</span></div>
+      </div>
+      <div class="doc-card" onclick="openModal('modal-privacy')" style="cursor:pointer;">
+        <div class="doc-ico">🔒</div>
+        <div><span class="doc-title">Privatlivspolitik (GDPR)</span><span class="doc-type">Behandling af personoplysninger</span></div>
+      </div>
+      <div class="doc-card" onclick="openModal('modal-ansvar')" style="cursor:pointer;">
+        <div class="doc-ico">📊</div>
+        <div><span class="doc-title">Årsregnskab</span><span class="doc-type">Seneste godkendte regnskab</span></div>
+      </div>
+      <div class="doc-card" onclick="openModal('modal-gf')" style="cursor:pointer;">
+        <div class="doc-ico">📝</div>
+        <div><span class="doc-title">Referater</span><span class="doc-type">Generalforsamling og bestyrelsesmøder</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ STØT OS ═══════════════════════════════ -->
+<section id="stoet-os" class="support-band">
+  <h2>Støt Djurslands Veteraner</h2>
+  <p>Som støttemedlem bidrager du direkte til vores arbejde for veteraner på Djursland. <strong id="stoet-pris" style="color:white;">205 kr.</strong> om året — det betyder noget.</p>
+  <div class="support-btns">
+    <a href="#kontakt" class="btn btn-outline">Bliv støttemedlem</a>
+    <a href="#kontakt" class="btn btn-white">Engangsdonation</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ GALLERI ═══════════════════════════════ -->
+<section id="galleri" class="wrap-alt">
+  <div class="wrap tc">
+    <div class="sec-title">Galleri</div>
+    <div class="sec-sub">Billeder fra foreningens liv og arrangementer</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px;">
+      <div onclick="openModal('modal-galleri')" style="background:var(--olive-pale);border:1px solid var(--border);border-radius:var(--radius);height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='var(--olive)'" onmouseout="this.style.background='var(--olive-pale)'">📸</div>
+      <div onclick="openModal('modal-galleri')" style="background:var(--olive-pale);border:1px solid var(--border);border-radius:var(--radius);height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='var(--olive)'" onmouseout="this.style.background='var(--olive-pale)'">📸</div>
+      <div onclick="openModal('modal-galleri')" style="background:var(--olive-pale);border:1px solid var(--border);border-radius:var(--radius);height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='var(--olive)'" onmouseout="this.style.background='var(--olive-pale)'">📸</div>
+      <div onclick="openModal('modal-galleri')" style="background:var(--olive-pale);border:1px solid var(--border);border-radius:var(--radius);height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='var(--olive)'" onmouseout="this.style.background='var(--olive-pale)'">📸</div>
+    </div>
+    <p style="margin-top:16px;font-size:0.82rem;color:var(--olive-l);font-style:italic;">Klik på et billede — galleri tilføjes løbende af bestyrelsen</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SAMARBEJDE ═══════════════════════════════ -->
+<section id="samarbejde">
+  <div class="wrap tc">
+    <div class="sec-title" style="display:inline-block;">Samarbejdspartnere</div>
+    <div class="sec-sub">Vi er taknemmelige for støtten fra vore samarbejdspartnere</div>
+    <div class="sponsors-grid">
+      <div class="sponsor-slot">Sponsor</div>
+      <div class="sponsor-slot">Sponsor</div>
+      <div class="sponsor-slot">Sponsor</div>
+      <div class="sponsor-slot">Sponsor</div>
+    </div>
+    <p style="margin-top:20px;font-size:0.8rem;color:var(--olive-l);font-style:italic;">Kontakt os for at blive samarbejdspartner</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ KONTAKT ═══════════════════════════════ -->
+<section id="kontakt" class="wrap-alt">
+  <div class="wrap">
+    <div class="sec-title">Kontakt os</div>
+    <div class="sec-sub">Vi er her for dig — tag fat i os</div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3 id="kontakt-navn">Djurslands Veteraner</h3>
+        <div class="c-line">
+          <div class="c-ico">📍</div>
+          <div class="c-detail"><strong>Adresse</strong><span id="k-adr">Ålsrodevej 1, 8500 Grenaa</span></div>
+        </div>
+        <div class="c-line">
+          <div class="c-ico">📞</div>
+          <div class="c-detail"><strong>Telefon</strong><a href="tel:22140959" id="k-tlf">22 14 09 59</a></div>
+        </div>
+        <div class="c-line">
+          <div class="c-ico">✉️</div>
+          <div class="c-detail"><strong>Email</strong><a href="mailto:info@djursveteraner.dk" id="k-email">info@djursveteraner.dk</a></div>
+        </div>
+        <div class="c-line">
+          <div class="c-ico">🏢</div>
+          <div class="c-detail"><strong>CVR</strong><span id="k-cvr">38588451</span></div>
+        </div>
+        <div class="social-row">
+          <a href="https://www.facebook.com/DjurslandsVeteraner/" target="_blank" class="soc-btn">📘 Facebook Side</a>
+          <a href="https://www.facebook.com/groups/djurslandsveteraner" target="_blank" class="soc-btn">👥 Facebook Gruppe</a>
+        </div>
+      </div>
+      <div class="map-box">
+        🗺️
+        <span style="font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);">Kort indlæses her</span>
+        <span style="font-size:0.78rem;" id="k-mapadr">Ålsrodevej 1 · 8500 Grenaa</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <div class="logo">
+        <div class="logo-badge">DV</div>
+        <div class="logo-text">
+          Djurslands Veteraner
+          <span>CVR: 38588451</span>
+        </div>
+      </div>
+      <p>Vi er en forening for veteraner på Djursland — med veterancafé i Ebeltoft og Kolind, aktiviteter og fællesskab for alle, der har tjent Danmark.</p>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <ul>
+        <li><a href="#nyheder">Nyheder</a></li>
+        <li><a href="#aktiviteter">Aktiviteter</a></li>
+        <li><a href="#galleri">Galleri</a></li>
+        <li><a href="#stoet-os">Støt os</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Organisation</h5>
+      <ul>
+        <li><a href="#bestyrelse">Bestyrelsen</a></li>
+        <li><button onclick="openModal('modal-vedtaegter')">Vedtægter</button></li>
+        <li><a href="#dokumenter">Dokumenter</a></li>
+        <li><a href="#samarbejde">Samarbejdspartnere</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Juridisk</h5>
+      <ul>
+        <li><button onclick="openModal('modal-privacy')">Privatlivspolitik</button></li>
+        <li><button onclick="openModal('modal-cookie')">Cookiepolitik</button></li>
+        <li><button onclick="openModal('modal-vilkaar')">Servicevilkår</button></li>
+        <li><button onclick="openModal('modal-ansvar')">Ansvarsfraskrivelse</button></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="foot-aar">2026</span> Djurslands Veteraner · CVR: 38588451 · Alle rettigheder forbeholdes</span>
+    <span>Design &amp; template: <a href="#" onclick="return false;">Nordic Operations</a></span>
+  </div>
+</footer>
+
+<!-- ═══ TILMELDING: EBELTOFT ═══ -->
+<div class="modal-overlay" id="modal-ak-eb">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Tilmeld — Veterancafé Ebeltoft</h2>
+      <button class="modal-close" onclick="closeModal('modal-ak-eb')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p><strong>📅 2. juni 2026 · ⏰ 14:00–17:00 · 📍 Ebeltoft</strong></p>
+      <p style="margin-top:12px;">Første mandag i måneden samles vi til uformel kaffe og godt selskab. Alle veteraner og pårørende er velkomne.</p>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px;">
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Navn</label><input type="text" id="eb-navn" placeholder="Dit fulde navn" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;"></div>
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Telefon</label><input type="tel" id="eb-tlf" placeholder="Dit mobilnummer" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;"></div>
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Antal deltagere</label><select id="eb-antal" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;-webkit-appearance:none;"><option>1 person</option><option>2 personer</option><option>3 personer</option><option>4+ personer</option></select></div>
+      </div>
+      <button onclick="confirmTilmelding('modal-ak-eb','Veterancafé Ebeltoft','2. juni')" style="margin-top:20px;width:100%;padding:14px;background:var(--olive);color:white;border:none;border-radius:8px;font-family:'Oswald',sans-serif;font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">✓ &nbsp;Tilmeld mig</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TILMELDING: KOLIND ═══ -->
+<div class="modal-overlay" id="modal-ak-ko">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Tilmeld — Veterancafé Kolind</h2>
+      <button class="modal-close" onclick="closeModal('modal-ak-ko')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p><strong>📅 19. juni 2026 · ⏰ 14:00–17:00 · 📍 Kolind</strong></p>
+      <p style="margin-top:12px;">Mød dine medborgere og snak med folk, der forstår hvad det vil sige at have tjent. Vi er åbnet igen efter pause.</p>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px;">
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Navn</label><input type="text" id="ko-navn" placeholder="Dit fulde navn" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;"></div>
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Telefon</label><input type="tel" id="ko-tlf" placeholder="Dit mobilnummer" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;"></div>
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Antal deltagere</label><select id="ko-antal" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;-webkit-appearance:none;"><option>1 person</option><option>2 personer</option><option>3 personer</option><option>4+ personer</option></select></div>
+      </div>
+      <button onclick="confirmTilmelding('modal-ak-ko','Veterancafé Kolind','19. juni')" style="margin-top:20px;width:100%;padding:14px;background:var(--olive);color:white;border:none;border-radius:8px;font-family:'Oswald',sans-serif;font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">✓ &nbsp;Tilmeld mig</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TILMELDING: SOMMERFEST ═══ -->
+<div class="modal-overlay" id="modal-ak-fest">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Tilmeld — Sommerfest</h2>
+      <button class="modal-close" onclick="closeModal('modal-ak-fest')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p><strong>📅 26. juni 2026 · ⏰ 16:00–21:00 · 📍 Djursland</strong></p>
+      <p style="margin-top:12px;">Årets store fællesarrangement for alle medlemmer og pårørende. Grillmad, musik og hygge. Tilmelding ønskes senest 20. juni.</p>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Fornavn</label><input type="text" id="fest-fn" placeholder="Fornavn" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;"></div>
+          <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Efternavn</label><input type="text" id="fest-en" placeholder="Efternavn" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;"></div>
+        </div>
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Telefon</label><input type="tel" id="fest-tlf" placeholder="Dit mobilnummer" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;"></div>
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive);margin-bottom:5px;">Antal deltagere</label><select id="fest-antal" style="width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;-webkit-appearance:none;"><option>1 person</option><option>2 personer</option><option>3 personer</option><option>4 personer</option><option>5+ personer</option></select></div>
+      </div>
+      <button onclick="confirmTilmelding('modal-ak-fest','Sommerfest','26. juni')" style="margin-top:20px;width:100%;padding:14px;background:var(--red);color:white;border:none;border-radius:8px;font-family:'Oswald',sans-serif;font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">✓ &nbsp;Tilmeld mig</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TILMELDING BEKRÆFTELSE ═══ -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header" style="background:var(--olive);">
+      <h2>Tilmelding modtaget</h2>
+      <button class="modal-close" onclick="closeModal('modal-confirm')">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:40px 32px;">
+      <div style="width:64px;height:64px;background:#e8f0e8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 20px;">✓</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:1.4rem;font-weight:600;color:var(--olive);margin-bottom:10px;">Du er tilmeldt!</div>
+      <div id="confirm-msg" style="font-size:0.9rem;color:var(--mid);line-height:1.65;margin-bottom:24px;"></div>
+      <button onclick="closeModal('modal-confirm')" style="padding:13px 32px;background:var(--olive);color:white;border:none;border-radius:8px;font-family:'Oswald',sans-serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">Luk</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BUTIK ═══ -->
+<div class="modal-overlay" id="modal-butik">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Butik &amp; Merchandise</h2>
+      <button class="modal-close" onclick="closeModal('modal-butik')">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3>Foreningens merchandise</h3>
+      <p>Vi sælger merchandise til støtte for foreningens arbejde. Alle indtægter går direkte til aktiviteter for veteraner på Djursland.</p>
+      <h3>Tilgængelige varer</h3>
+      <p>Kontakt bestyrelsen for aktuel lagerliste og priser. Varer kan afhentes ved arrangementer eller efter aftale.</p>
+      <div class="legal-stamp" style="margin-top:20px;">
+        📞 Kontakt os på <a href="tel:22140959">22 14 09 59</a> eller <a href="mailto:info@djursveteraner.dk">info@djursveteraner.dk</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GALLERI MODAL ═══ -->
+<div class="modal-overlay" id="modal-galleri">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Galleri</h2>
+      <button class="modal-close" onclick="closeModal('modal-galleri')">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+        <div style="background:var(--olive-pale);border-radius:8px;height:100px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📷</div>
+        <div style="background:var(--olive-pale);border-radius:8px;height:100px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📷</div>
+        <div style="background:var(--olive-pale);border-radius:8px;height:100px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📷</div>
+      </div>
+      <p style="font-style:italic;color:var(--olive-l);font-size:0.85rem;">Billeder fra arrangementer tilføjes løbende af bestyrelsen.<br>Kontakt os for at bidrage med fotos.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP MODAL ═══ -->
+<div class="modal-overlay" id="modal-app">
+  <div class="modal-box" style="max-width:460px;">
+    <div class="modal-header">
+      <h2>Aktivitets-app</h2>
+      <button class="modal-close" onclick="closeModal('modal-app')">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div style="font-size:3rem;margin-bottom:16px;">📱</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:600;color:var(--olive);margin-bottom:10px;">Djurslands Veteraner<br>Aktivitetskalender</div>
+      <p style="margin-bottom:24px;">Vores mobilapp viser alle kommende aktiviteter i kalenderformat. Tryk på en aktivitet og tilmeld dig direkte med få tryk.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+        <a href="aktiviteter-app.html" target="_blank" style="display:inline-block;padding:14px 28px;background:var(--olive);color:white;text-decoration:none;border-radius:8px;font-family:'Oswald',sans-serif;font-size:0.85rem;letter-spacing:1.5px;text-transform:uppercase;">Åbn app →</a>
+      </div>
+      <div class="legal-stamp">
+        💡 <strong>Installer på din telefon:</strong> Åbn appen i din browser, tryk på "Del"-ikonet (iOS) eller menu (Android), og vælg "Føj til hjemmeskærm" — så virker den som en rigtig app.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EMBEDDED APP SHEET (tilmeld direkte fra hjemmesiden) ═══ -->
+<div class="modal-overlay" id="modal-app-sheet" style="align-items:flex-end;padding:0;">
+  <div style="background:var(--white);border-radius:24px 24px 0 0;width:100%;max-width:480px;margin:0 auto;max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.34,1.1,0.64,1);" id="app-sheet-inner">
+    <div style="width:40px;height:4px;background:var(--border);border-radius:2px;margin:14px auto 0;"></div>
+    <div style="padding:18px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;">
+      <div>
+        <div id="as-type" style="font-family:'Oswald',sans-serif;font-size:0.65rem;letter-spacing:1.8px;text-transform:uppercase;color:var(--red);margin-bottom:4px;"></div>
+        <div id="as-title" style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:var(--dark);line-height:1.2;"></div>
+      </div>
+      <button onclick="closeModal('modal-app-sheet')" style="background:var(--olive-pale);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.9rem;flex-shrink:0;margin-left:12px;">✕</button>
+    </div>
+    <div id="as-chips" style="padding:14px 24px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border);"></div>
+    <div id="as-desc" style="padding:14px 24px;font-size:0.88rem;color:var(--mid);line-height:1.65;border-bottom:1px solid var(--border);"></div>
+
+    <!-- formular -->
+    <div id="as-form" style="padding:20px 24px 36px;">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--olive);margin-bottom:16px;">Tilmelding</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive-l);margin-bottom:4px;">Fornavn</label><input type="text" id="as-fn" placeholder="Fornavn" autocomplete="given-name" style="width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;"></div>
+        <div><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive-l);margin-bottom:4px;">Efternavn</label><input type="text" id="as-en" placeholder="Efternavn" autocomplete="family-name" style="width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;"></div>
+      </div>
+      <div style="margin-bottom:12px;"><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive-l);margin-bottom:4px;">Telefon</label><input type="tel" id="as-tlf" placeholder="Dit mobilnummer" autocomplete="tel" style="width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;"></div>
+      <div style="margin-bottom:12px;"><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive-l);margin-bottom:4px;">Email (valgfri)</label><input type="email" id="as-email" placeholder="din@email.dk" autocomplete="email" style="width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;"></div>
+      <div style="margin-bottom:20px;"><label style="display:block;font-family:'Oswald',sans-serif;font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--olive-l);margin-bottom:4px;">Antal deltagere</label><select id="as-antal" style="width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;-webkit-appearance:none;background:white;"><option value="1">1 person (kun mig)</option><option value="2">2 personer</option><option value="3">3 personer</option><option value="4">4 personer</option><option value="5+">5 eller flere</option></select></div>
+      <button onclick="submitAppSheet()" style="width:100%;padding:15px;background:var(--olive);color:white;border:none;border-radius:12px;font-family:'Oswald',sans-serif;font-size:0.92rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;">✓ &nbsp;Tilmeld mig</button>
+      <div style="text-align:center;margin-top:14px;">
+        <a href="aktiviteter-app.html" target="_blank" style="font-family:'Oswald',sans-serif;font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--olive-l);text-decoration:none;">📱 Åbn fuld aktivitets-app →</a>
+      </div>
+    </div>
+
+    <!-- bekræftelse -->
+    <div id="as-confirm" style="display:none;padding:40px 24px 48px;text-align:center;">
+      <div style="width:64px;height:64px;background:#e8f0e8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 20px;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;">✓</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:1.4rem;font-weight:600;color:var(--olive);margin-bottom:10px;">Du er tilmeldt!</div>
+      <div id="as-confirm-txt" style="font-size:0.88rem;color:var(--mid);line-height:1.65;margin-bottom:24px;"></div>
+      <button onclick="closeModal('modal-app-sheet')" style="padding:13px 32px;background:var(--olive);color:white;border:none;border-radius:8px;font-family:'Oswald',sans-serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">Luk</button>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+#modal-app-sheet.open #app-sheet-inner { transform: translateY(0); }
+</style>
+
+<!-- ═══════════════════════════════ JAVASCRIPT ═══════════════════════════════ -->
+<script>
+/* ── Cookie banner ── */
+function closeCookie() {
+  document.getElementById('cookie-banner').classList.add('hidden');
+  localStorage.setItem('cookieConsent', '1');
+}
+if (localStorage.getItem('cookieConsent')) {
+  document.getElementById('cookie-banner').classList.add('hidden');
+}
+
+/* ── Modals ── */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+/* Close on overlay click */
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) closeModal(this.id);
+  });
+});
+/* Close on ESC */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+  }
+});
+
+/* ── App sheet (tilmeld direkte fra hjemmesiden) ── */
+const AK_DATA = [
+  { id:1, type:'Café', titel:'Veterancafé Ebeltoft',  dato:'2. juni 2026',  tid:'14:00–17:00', sted:'Ebeltoft',  desc:'Første mandag i måneden. Uformel kaffe og godt selskab. Alle veteraner og pårørende velkomne.' },
+  { id:2, type:'Café', titel:'Veterancafé Kolind',    dato:'19. juni 2026', tid:'14:00–17:00', sted:'Kolind',    desc:'Mød dine medborgere og snak med folk, der forstår hvad det vil sige at have tjent Danmark.' },
+  { id:3, type:'Arrangement', titel:'Sommerfest for veteraner', dato:'26. juni 2026', tid:'16:00–21:00', sted:'Djursland', desc:'Årets store fællesarrangement. Grillmad, musik og hygge. Tilmelding ønskes senest 20. juni.' }
+];
+let activeAk = null;
+
+function openAppSheet(id) {
+  activeAk = AK_DATA.find(a => a.id === id);
+  if (!activeAk) return;
+  document.getElementById('as-type').textContent  = activeAk.type;
+  document.getElementById('as-title').textContent = activeAk.titel;
+  document.getElementById('as-desc').textContent  = activeAk.desc;
+  document.getElementById('as-chips').innerHTML =
+    `<span style="display:flex;align-items:center;gap:6px;background:var(--olive-pale);border-radius:8px;padding:7px 12px;font-size:0.78rem;color:var(--olive);">📅 ${activeAk.dato}</span>
+     <span style="display:flex;align-items:center;gap:6px;background:var(--olive-pale);border-radius:8px;padding:7px 12px;font-size:0.78rem;color:var(--olive);">⏰ ${activeAk.tid}</span>
+     <span style="display:flex;align-items:center;gap:6px;background:var(--olive-pale);border-radius:8px;padding:7px 12px;font-size:0.78rem;color:var(--olive);">📍 ${activeAk.sted}</span>`;
+  // reset
+  document.getElementById('as-form').style.display    = 'block';
+  document.getElementById('as-confirm').style.display = 'none';
+  ['as-fn','as-en','as-tlf','as-email'].forEach(id => document.getElementById(id).value = '');
+  openModal('modal-app-sheet');
+}
+
+function submitAppSheet() {
+  const fn  = document.getElementById('as-fn').value.trim();
+  const en  = document.getElementById('as-en').value.trim();
+  const tlf = document.getElementById('as-tlf').value.trim();
+  if (!fn || !en || !tlf) { alert('Udfyld fornavn, efternavn og telefon.'); return; }
+  document.getElementById('as-form').style.display    = 'none';
+  document.getElementById('as-confirm-txt').innerHTML =
+    `<strong>${fn} ${en}</strong>, du er tilmeldt<br><strong>${activeAk.titel}</strong> den <strong>${activeAk.dato}</strong>.<br><br>Vi glæder os til at se dig!`;
+  document.getElementById('as-confirm').style.display = 'block';
+}
+
+/* ── Tilmelding bekræftelse ── */
+function confirmTilmelding(modalId, aktivitetNavn, dato) {
+  closeModal(modalId);
+  document.getElementById('confirm-msg').innerHTML =
+    `Du er tilmeldt <strong>${aktivitetNavn}</strong> den <strong>${dato}</strong>.<br><br>
+     Vi glæder os til at se dig. Kontakt os på <a href="tel:22140959">22 14 09 59</a> ved spørgsmål.`;
+  setTimeout(() => openModal('modal-confirm'), 200);
+}
+
+/* ── CONFIG injection ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const c = CONFIG;
+  // Page title
+  document.getElementById('page-title').textContent = c.navn;
+  // Header
+  document.getElementById('hdr-initials').textContent = c.initialer;
+  document.getElementById('hdr-navn').textContent = c.navn;
+  document.getElementById('hdr-under').textContent = c.undertitel;
+  // Hero
+  document.getElementById('hero-region').textContent = c.region;
+  // Kontakt
+  document.getElementById('kontakt-navn').textContent = c.navn;
+  document.getElementById('k-adr').textContent = c.adresse + ', ' + c.postnrBy;
+  document.getElementById('k-tlf').textContent = c.telefon;
+  document.getElementById('k-tlf').href = 'tel:' + c.telefon.replace(/\s/g,'');
+  document.getElementById('k-email').textContent = c.email;
+  document.getElementById('k-email').href = 'mailto:' + c.email;
+  document.getElementById('k-cvr').textContent = c.cvr;
+  document.getElementById('k-mapadr').textContent = c.adresse + ' · ' + c.postnrBy;
+  // Footer
+  document.getElementById('foot-aar').textContent = c.aargang;
+  // Støt os pris
+  document.getElementById('stoet-pris').textContent = c.kontingent + ' kr.';
+  // CSS farver
+  document.documentElement.style.setProperty('--olive', c.farverPrimaer);
+  document.documentElement.style.setProperty('--red', c.farverAccent);
+  document.documentElement.style.setProperty('--sand', c.farverSand);
+});
+</script>
+</body>
+</html>
