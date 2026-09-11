@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="DV Aktiviteter">
 <meta name="theme-color" content="#4a5240">
 <title>DV Aktiviteter</title>
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+CiAgPHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSI0MCIgZmlsbD0iIzRhNTI0MCIvPgogIDxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9IjY4IiBmaWxsPSIjYzhiOTlhIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHRleHQgeD0iOTYiIHk9IjExOCIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjcyIiBmb250LXdlaWdodD0iOTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjYzhiOTlhIj5EVjwvdGV4dD4KPC9zdmc+">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -849,15 +849,18 @@ function renderList() {
 
   let items = [...AKTIVITETER].sort((a, b) => a.dato.localeCompare(b.dato));
 
+  // Fjern udløbne aktiviteter automatisk
+  const now = new Date(); now.setHours(0,0,0,0);
+  items = items.filter(a => { const d=new Date(a.dato); d.setHours(0,0,0,0); return d >= now; });
+
   if (currentView === 'mine') {
-    items = items.filter(a => myTilmeldinger.includes(a.id));
+    items = items.filter(a => DV_STORE.isTilmeldt(a.id));
   }
 
   if (selectedDate) {
     const ds = selectedDate.toISOString().slice(0,10);
     items = items.filter(a => a.dato === ds);
   } else {
-    // Filter to current month view
     items = items.filter(a => {
       const d = new Date(a.dato);
       return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
@@ -974,14 +977,27 @@ function submitTilmelding() {
     AKTIVITETER.find(a => a.id === activeActivity.id).tilmeldte++;
   }
 
-  // Show confirm
+  // Gem via fælles DV_STORE
+  DV_STORE.save({
+    akId:  activeActivity.id,
+    navn:  fornavn + ' ' + efternavn,
+    tlf:   tlf,
+    email: email,
+    antal: document.getElementById('f-antal').value,
+    rolle: 'Ikke angivet',
+    besked: ''
+  });
+
   document.getElementById('sheet-content').style.display = 'none';
   document.getElementById('confirm-txt').innerHTML =
-    `<strong>${fornavn}</strong>, du er tilmeldt<br><strong>${activeActivity.titel}</strong><br><br>
-     ${email ? 'En bekræftelse sendes til ' + email + '.' : 'Kontakt os på tlf. 22 14 09 59 ved spørgsmål.'}`;
+    `<strong>${fornavn}</strong>, du er tilmeldt<br>
+     <strong>${activeActivity.titel}</strong><br>
+     ${DV_UTIL.datoStr(activeActivity.dato)} · ${activeActivity.tid}<br><br>
+     ${email ? 'Vi sender bekræftelse til ' + email + '.' : 'Kontakt os på 22 14 09 59 ved spørgsmål.'}`;
   document.getElementById('confirm-view').classList.add('show');
 
   renderList();
+  renderCalendar();
 }
 
 /* ── View toggle ── */
@@ -994,7 +1010,7 @@ function setView(v) {
 
 /* ── Go to main site ── */
 function goToSite(hash) {
-  window.open('djursveteraner-v2.html' + (hash || ''), '_blank');
+  window.open('./index.html' + (hash || ''), '_blank');
 }
 
 /* ── Init ── */
@@ -1031,8 +1047,16 @@ renderList();
   <div style="margin-top:10px;font-size:0.72rem;color:rgba(255,255,255,0.35);font-style:italic;">Appen virker offline og opdateres automatisk</div>
 </div>
 
+<script src="./dv-data.js"></script>
+
 <script>
 // PWA Install
+// Tilmeldinger via fælles DV_STORE
+let myTilmeldinger = { 
+  includes: (id) => DV_STORE.isTilmeldt(id),
+  push: (id) => {} // handled by DV_STORE.save
+};
+
 let deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', e => {

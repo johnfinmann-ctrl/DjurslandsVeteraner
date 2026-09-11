@@ -1,13 +1,16 @@
-// Nordic Operations — DV Aktiviteter Service Worker v1
-const CACHE = 'dv-aktiviteter-v1';
+// Nordic Operations — DV Aktiviteter Service Worker v2
+// GitHub Pages kompatibel — relative paths
+const CACHE = 'dv-aktiviteter-v2';
 const ASSETS = [
   './aktiviteter-app.html',
-  'https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap'
+  './dv-data.js',
+  './index.html'
 ];
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(ASSETS).catch(() => {}))
+    caches.open(CACHE)
+      .then(cache => cache.addAll(ASSETS).catch(err => console.warn('Cache partial:', err)))
   );
   self.skipWaiting();
 });
@@ -23,6 +26,8 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => cached))
+    caches.match(e.request)
+      .then(cached => cached || fetch(e.request)
+        .catch(() => cached))
   );
 });
