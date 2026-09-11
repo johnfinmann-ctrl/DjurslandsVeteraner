@@ -666,106 +666,16 @@
   </div>
 </div>
 
+</script>
+<script src="./dv-data.js"></script>
 <script>
 /* ════════════════════════════════════════════
-   AKTIVITETS-DATA
-   Tilføj/ret aktiviteter her
+   AKTIVITETS-DATA — styres fra ./dv-data.js
+   Ret KUN aktiviteter i dv-data.js
    ════════════════════════════════════════════ */
-const AKTIVITETER = [
-  {
-    id: 1,
-    titel: "Veterancafé Ebeltoft",
-    type: "Café",
-    dato: "2026-06-01",  // 1. mandag i juni
-    tid: "14:00–17:00",
-    sted: "Ebeltoft",
-    beskrivelse: "Første mandag i måneden samles vi til uformel kaffe og godt selskab. Alle veteraner og pårørende er velkomne — ingen tilmelding nødvendig, men vi sætter pris på at vide, om du kommer.",
-    pladser: null,  // null = ubegrænset
-    tilmeldte: 8,
-    badge: null,
-    gentagelse: "Første mandag/måned"
-  },
-  {
-    id: 2,
-    titel: "Veterancafé Kolind",
-    type: "Café",
-    dato: "2026-06-19",
-    tid: "14:00–17:00",
-    sted: "Kolind",
-    beskrivelse: "Mød dine medborgere og snak med folk, der forstår hvad det vil sige at have tjent Danmark. Vi er åbnet igen efter en pause og glæder os til at se jer.",
-    pladser: null,
-    tilmeldte: 5,
-    badge: "Ny start",
-    gentagelse: null
-  },
-  {
-    id: 3,
-    titel: "Sommerfest for veteraner",
-    type: "Arrangement",
-    dato: "2026-06-26",
-    tid: "16:00–21:00",
-    sted: "Djursland",
-    beskrivelse: "Årets store fællesarrangement for alle medlemmer og pårørende. Der vil være grillmad, musik og hyggelig stemning. Tilmelding ønskes senest 20. juni.",
-    pladser: 80,
-    tilmeldte: 34,
-    badge: "Populær",
-    gentagelse: null
-  },
-  {
-    id: 4,
-    titel: "Veterancafé Ebeltoft",
-    type: "Café",
-    dato: "2026-07-06",  // 1. mandag i juli
-    tid: "14:00–17:00",
-    sted: "Ebeltoft",
-    beskrivelse: "Første mandag i måneden samles vi til uformel kaffe og godt selskab.",
-    pladser: null,
-    tilmeldte: 3,
-    badge: null,
-    gentagelse: "Første mandag/måned"
-  },
-  {
-    id: 5,
-    titel: "Sommerudflugt — Mols Bjerge",
-    type: "Udflugt",
-    dato: "2026-07-15",
-    tid: "10:00–15:00",
-    sted: "Mols Bjerge",
-    beskrivelse: "En rolig vandring i Mols Bjerge med guide. Turen er ca. 6 km og tilpasset alle konditionsniveauer. Medbringe madpakke. Gratis for alle medlemmer.",
-    pladser: 25,
-    tilmeldte: 18,
-    badge: "Få pladser",
-    gentagelse: null
-  },
-  {
-    id: 6,
-    titel: "Veterancafé Kolind",
-    type: "Café",
-    dato: "2026-07-17",
-    tid: "14:00–17:00",
-    sted: "Kolind",
-    beskrivelse: "Uformel kaffe og samvær i Kolind.",
-    pladser: null,
-    tilmeldte: 4,
-    badge: null,
-    gentagelse: null
-  },
-  {
-    id: 7,
-    titel: "Generalforsamling 2026",
-    type: "Møde",
-    dato: "2026-08-20",
-    tid: "19:00–21:30",
-    sted: "Grenaa",
-    beskrivelse: "Årets generalforsamling. Alle medlemmer har stemmeret og opfordres til at deltage. Dagsorden udsendes senest 2 uger før til alle registrerede medlemmer.",
-    pladser: null,
-    tilmeldte: 12,
-    badge: "Vigtigt",
-    gentagelse: null
-  }
-];
+const AKTIVITETER = DV_DATA.aktiviteter;
 
-const MAANEDER = ["Januar","Februar","Marts","April","Maj","Juni","Juli","August","September","Oktober","November","December"];
+const MAANEDER   = DV_UTIL.MND_F;
 const DAGE_SHORT = ["Man","Tir","Ons","Tor","Fre","Lør","Søn"];
 
 let currentYear = 2026;
@@ -1047,7 +957,6 @@ renderList();
   <div style="margin-top:10px;font-size:0.72rem;color:rgba(255,255,255,0.35);font-style:italic;">Appen virker offline og opdateres automatisk</div>
 </div>
 
-<script src="./dv-data.js"></script>
 
 <script>
 // PWA Install

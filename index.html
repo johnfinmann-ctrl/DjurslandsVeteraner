@@ -1240,29 +1240,13 @@ button{font-family:inherit;cursor:pointer;}
 <script>
 'use strict';
 
-/* ─ DATA ─ */
-const AK = [
-  {id:1,titel:'Veteransejlads',type:'sejlads',dato:'2026-07-15',tid:'10:00',sted:'Ebeltoft Havn',desc:'En dejlig sejltur for veteraner og pårørende. Ingen erfaring nødvendig.',pladser:12,tilmeldte:6},
-  {id:2,titel:'Veteransejlads',type:'sejlads',dato:'2026-07-22',tid:'10:00',sted:'Ebeltoft Havn',desc:'Anden tur i juli. Tilmeld dig hurtigt.',pladser:12,tilmeldte:9},
-  {id:3,titel:'Veterancafé Kolind',type:'cafe',dato:'2026-07-03',tid:'14:00',sted:'Kolind',desc:'Uformel kaffe og godt selskab. Alle velkomne.',pladser:null,tilmeldte:8},
-  {id:4,titel:'Veterancafé Ebeltoft',type:'cafe',dato:'2026-08-04',tid:'14:00',sted:'Ebeltoft',desc:'Første mandag i måneden.',pladser:null,tilmeldte:5},
-  {id:5,titel:'Sommerudflugt — Mols Bjerge',type:'udflugt',dato:'2026-07-28',tid:'10:00',sted:'Mols Bjerge',desc:'Rolig vandring ca. 6 km. Medbringe madpakke. Gratis for alle.',pladser:25,tilmeldte:18},
-  {id:6,titel:'Generalforsamling 2026',type:'moede',dato:'2026-08-20',tid:'19:00',sted:'Grenaa',desc:'Årets generalforsamling. Alle medlemmer har stemmeret.',pladser:null,tilmeldte:12}
-];
-const MND=['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const MND_F=['Januar','Februar','Marts','April','Maj','Juni','Juli','August','September','Oktober','November','December'];
-const BEST=[
-  {navn:'Formand',rolle:'Formand',region:'Syddjurs',ini:'F'},
-  {navn:'Næstformand',rolle:'Næstformand',region:'Norddjurs',ini:'N'},
-  {navn:'Kasserer',rolle:'Kasserer',region:'',ini:'K'},
-  {navn:'Sekretær',rolle:'Sekretær',region:'',ini:'S'},
-  {navn:'Bestyrelsesmedlem',rolle:'Norddjurs',region:'Norddjurs',ini:'B'},
-  {navn:'Bestyrelsesmedlem',rolle:'Syddjurs',region:'Syddjurs',ini:'B'},
-  {navn:'1. suppleant',rolle:'Suppleant',region:'',ini:'S'},
-  {navn:'2. suppleant',rolle:'Suppleant',region:'',ini:'S'},
-];
-const PIN='dv2026';
-let myTilm=JSON.parse(localStorage.getItem('dv3_tilm')||'[]');
+/* ─ DATA — alle aktiviteter styres fra ./dv-data.js ─ */
+const AK   = DV_DATA.aktiviteter;
+const BEST = DV_DATA.bestyrelse;
+const MND  = DV_UTIL.MND;
+const MND_F= DV_UTIL.MND_F;
+const PIN  = 'dv2026';
+// Tilmeldinger via fælles DV_STORE (defineret i dv-data.js)
 let activeAk=null,curRole='v',kalFilter='all';
 
 /* ─ VIEWS ─ */
