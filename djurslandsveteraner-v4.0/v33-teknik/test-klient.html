@@ -1,0 +1,31 @@
+<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DV V3.3 – testværktøj (kun test)</title>
+<style>body{font:16px system-ui;max-width:720px;margin:16px auto;padding:0 16px}input,button{font:inherit;padding:10px;margin:4px 0;width:100%;box-sizing:border-box}button{background:#2f4a2f;color:#fff;border:0;border-radius:6px}pre{background:#f3f3f3;padding:10px;white-space:pre-wrap;word-break:break-all}h2{margin-top:28px}</style></head><body>
+<h1>Testværktøj – kun til test</h1>
+<p>Åbnes fra et andet sted end Google (fx localhost eller GitHub Pages), så browserens sikkerhedsregler (CORS/omdirigering) testes rigtigt. Brug kun testdata.</p>
+<label>Webapp-URL (…/exec)<input id="url" placeholder="https://script.google.com/macros/s/…/exec"></label>
+<h2>1. Hent arrangementer (GET)</h2><button onclick="ev()">Hent</button>
+<h2>2. Test-tilmelding (POST)</h2>
+<input id="eid" value="test1" placeholder="event-id"><input id="dem" placeholder="deltager-e-mail (din egen testadresse)"><input id="ant" value="1" placeholder="antal">
+<button onclick="su()">Send test-tilmelding</button>
+<h2>3. Admin-login</h2>
+<input id="em" placeholder="admin e-mail (fra fanen Admins)"><button onclick="rc()">Send engangskode</button>
+<input id="cd" placeholder="8-cifret kode"><button onclick="vc()">Log ind</button>
+<button onclick="ae()">Vis mine arrangementer</button>
+<input id="aeid" placeholder="event-id"><button onclick="al()">Vis deltagerliste</button>
+<button onclick="cs()">Hent CSV</button>
+<h2>Svar</h2><pre id="o">–</pre>
+<script>
+let TOKEN='';const $=i=>document.getElementById(i);
+const show=(l,x)=>{$('o').textContent=l+'\n'+(typeof x==='string'?x:JSON.stringify(x,null,2))};
+async function call(l,opt,body){try{const r=await fetch($('url').value.trim()+(opt.q||''),opt.q!==undefined?{}:{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+ const t=await r.text();let j;try{j=JSON.parse(t)}catch(e){show(l+' – HTTP '+r.status+' (ikke JSON – læsbart svar mangler?)',t.slice(0,400));return null}
+ show(l+' – HTTP '+r.status+' (svar kunne læses)',j);return j}catch(e){show(l+' – NETVÆRKS/CORS-FEJL',String(e));return null}}
+const ev=()=>call('GET events',{q:'?action=events'});
+const su=()=>call('POST signup',{}, {action:'signup',event_id:$('eid').value,navn:'Test Testesen',email:$('dem').value,tlf:'12345678',antal:Number($('ant').value),bemaerkning:'TEST',website:''});
+const rc=()=>call('POST request_code',{}, {action:'request_code',email:$('em').value});
+const vc=async()=>{const j=await call('POST verify_code',{}, {action:'verify_code',email:$('em').value,code:$('cd').value});if(j&&j.token)TOKEN=j.token};
+const ae=()=>call('POST admin_events',{}, {action:'admin_events',token:TOKEN});
+const al=()=>call('POST admin_list',{}, {action:'admin_list',event_id:$('aeid').value,token:TOKEN});
+const cs=()=>call('POST admin_csv',{}, {action:'admin_csv',event_id:$('aeid').value,token:TOKEN});
+</script></body></html>

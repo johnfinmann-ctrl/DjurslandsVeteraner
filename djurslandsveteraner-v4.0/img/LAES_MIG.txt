@@ -1,0 +1,5 @@
+BILLEDER – læg foreningens egne fotografier her (ingen kode skal ændres)
+hero-1.jpg ... hero-5.jpg  Forsidens billedserie. Liggende, min. 1920x1080, under ca. 400 KB pr. billede. Motivet bør ligge i midten.
+popup.jpg                  Pop-up (valgfri), ca. 1040x400.
+logo.png                   Foreningens logo, gennemsigtig baggrund, min. 256x256.
+Mangler en fil, vises en neutral billedplads. Brug kun billeder, hvor de afbildede har givet samtykke.
