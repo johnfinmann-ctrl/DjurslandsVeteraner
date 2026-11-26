@@ -1,0 +1,27 @@
+const fs=require('fs'),vm=require('vm');
+const src=fs.readFileSync(__dirname+'/Code.gs','utf8');
+const ctx={};vm.createContext(ctx);vm.runInContext(src+';this.v=validateSignup_;this.c=capacity_;this.s=canSee_;this.q=csvCell_;',ctx);
+let f=0;const t=(n,c)=>{console.log((c?'OK   ':'FEJL ')+n);if(!c)f++};
+const ok={navn:'Test Person',email:'a@b.dk',tlf:'+45 12 34 56 78',antal:2,bemaerkning:''};
+t('gyldig',ctx.v(ok).errors.length===0);
+t('ugyldig mail',ctx.v({...ok,email:'x'}).errors.includes('email'));
+t('antal 0',ctx.v({...ok,antal:0}).errors.includes('antal'));
+t('antal 1.5',ctx.v({...ok,antal:1.5}).errors.includes('antal'));
+t('antal 11',ctx.v({...ok,antal:11}).errors.includes('antal'));
+t('tlf bogstaver',ctx.v({...ok,tlf:'abc'}).errors.includes('tlf'));
+t('honeypot',ctx.v({...ok,website:'x'}).honeypot===true);
+const ev={pladser:10,status:'aktiv'};const reg=(a,s='registreret')=>({antal:a,status:s});
+t('plads ok',ctx.c(ev,[reg(5)],5).ok);
+t('plads +1 over',!ctx.c(ev,[reg(5)],6).ok);
+t('fjernet tæller ikke',ctx.c(ev,[reg(9,'fjernet')],10).ok);
+t('fuld status',!ctx.c({pladser:10,status:'fuldt booket'},[],1).ok);
+t('aflyst',ctx.c({pladser:10,status:'aflyst'},[],1).reason==='aflyst');
+t('ubegrænset',ctx.c({pladser:'',status:'aktiv'},[reg(500)],5).ok);
+const A=(e,r)=>({email:e,rolle:r});const E={ansvarlig_email:'Ans@x.dk'};
+t('hoved ser alt',ctx.s(A('h@x.dk','hoved'),E));
+t('ansvarlig egen',ctx.s(A('ans@x.dk','ansvarlig'),E));
+t('ansvarlig andens',!ctx.s(A('and@x.dk','ansvarlig'),E));
+t('ingen admin',!ctx.s(null,E));
+t('csv formelinjektion',ctx.q('=HYPERLINK("x")').startsWith('"\''));
+t('csv citat',ctx.q('a"b')==='"a""b"');
+process.exit(f?1:0)
