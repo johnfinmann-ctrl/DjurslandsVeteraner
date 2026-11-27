@@ -1,0 +1,10 @@
+BILLEDER TIL DJURSLANDS VETERANER V4.1
+Læg foreningens egne, godkendte fotografier i denne mappe med præcis disse filnavne. Siden viser kun de filer, der findes.
+Slider (liggende, min. 1920x1080, under 400 KB hver, JPG):
+  hero-1-flagdag.jpg, hero-2-faellesskab.jpg, hero-3-cafe.jpg, hero-4-sejlads.jpg, hero-5-mindehoejtidelighed.jpg
+Veterancaféer (3:2, ca. 1200x800): cafe-kolind.jpg, cafe-aalsrode.jpg, cafe-ebeltoft.jpg
+Pop-up: popup.jpg (ca. 1200x800)
+Logo: logo.png (eller logo.svg; ret LOGO i js/config.js)
+Bestyrelsen: portraetter i img/bestyrelse/ og sti i dv-data.js (felt "foto"), samt navne i feltet "navn".
+Dokumenter: docs/vedtaegter.pdf og docs/forretningsorden.pdf (originale, godkendte PDF'er).
+Kun fotos foreningen ejer og har tilladelse til at offentliggøre (samtykke fra personer, der kan genkendes).

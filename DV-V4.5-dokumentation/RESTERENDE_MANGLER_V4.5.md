@@ -1,0 +1,11 @@
+# Resterende mangler (afventer bekræftelse – intet er opfundet)
+- Billeder: ingen rigtige fotos er indsat (kunne ikke hentes herfra, og publiceringstilladelse er ikke dokumenteret). Forsiden viser ensfarvet mørkegrøn flade; Ken Burns-effekten er indbygget og vises, så snart fotos lægges i `img/` (filnavne i `img/LAES_MIG.txt`).
+- Originalt logo (`img/logo.png`) og godkendte portrætter
+- Café Ebeltoft: adresse og tid (14:00–17:00 Strandvejen 30 eller fra 09:30 Marinestuen, Stockflethsvej 7?)
+- Café Kolind og Ålsrode: datoer og tider
+- Kommende officielle arrangementer: kunne ikke læses (Klubmodul tom, Facebook blokeret) – kalenderen er tom i produktion
+- Foreningens adresse (Ålsrodevej 1 eller Fuglsangvej 121), Livslinjens åbningstider, bestyrelsens navne
+- Originale vedtægter og forretningsorden som PDF
+- Brevo-konto, API-nøgle, afsenderadresse og rigtige tests A–F
+- Privatlivstekst skal gennemgås; teksterne om Veteranstøtten og "afmelding senest 24 timer før" er ikke bekræftet/håndhævet
+- Kendt, ikke rettet: ratelimit kan misbruges til at fylde tilmeldingskvoten; pop-up vises igen ved genindlæsning, hvis den ikke lukkes
